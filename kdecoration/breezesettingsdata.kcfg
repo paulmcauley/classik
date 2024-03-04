@@ -99,7 +99,7 @@
     </entry>
 
     <entry name="DrawTitleBarSeparator" type = "Bool">
-        <default>true</default>
+        <default>false</default>
     </entry>
 
     <!-- ______________________________WINDOW______________________________ -->
@@ -922,12 +922,13 @@
             <choice name="WindowOutlineCustomColor" />
             <choice name="WindowOutlineCustomWithContrast" />
         </choices>
-        <default>WindowOutlineAccentColor</default>
+        <default param ="Active">WindowOutlineAccentColor</default>
+        <default param ="Inactive">WindowOutlineAccentWithContrast</default>
     </entry>
 
 
     <entry name="LockThinWindowOutlineStyleActiveInactive" type = "Bool">
-        <default>true</default>
+        <default>false</default>
     </entry>
 
     <entry name="ThinWindowOutlineCustomColor$(ThinWindowOutlineCustomColorActive)" type = "Color">
@@ -975,7 +976,7 @@
                 <value>Active</value>
             </values>
         </parameter>
-       <default param ="Active">60</default>
+       <default param ="Active">67</default>
        <default param ="Inactive">25</default>
        <min>0</min>
        <max>100</max>
@@ -989,7 +990,7 @@
             </values>
         </parameter>
        <default param ="Active">50</default>
-       <default param ="Inactive">25</default>
+       <default param ="Inactive">20</default>
        <min>0</min>
        <max>100</max>
     </entry>
