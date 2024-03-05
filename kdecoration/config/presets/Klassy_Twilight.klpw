@@ -1,7 +1,7 @@
 [Klassy Window Decoration Preset File]
 version=5.0.breeze5.27.10
 
-[Windeco Preset Klassy bottom panel]
+[Windeco Preset Klassy Twilight]
 ActiveTitleBarOpacity=100
 AdjustBackgroundColorOnPoorContrastActive=true
 AdjustBackgroundColorOnPoorContrastInactive=true
@@ -20,7 +20,7 @@ ButtonIconColorsActive=TitleBarText
 ButtonIconColorsInactive=TitleBarText
 ButtonIconOpacityActive=100
 ButtonIconOpacityInactive=100
-ButtonIconStyle=StyleRedmond
+ButtonIconStyle=StyleKlassy
 ButtonOverrideColorsActiveApplicationMenu=
 ButtonOverrideColorsActiveClose=
 ButtonOverrideColorsActiveContextHelp=
@@ -55,7 +55,7 @@ ColorizeThinWindowOutlineWithButton=true
 CornerRadius=1
 DrawBackgroundGradient=false
 DrawBorderOnMaximizedWindows=false
-DrawTitleBarSeparator=false
+DrawTitleBarSeparator=true
 ForceColorizeSystemIcons=false
 FullHeightButtonSpacingLeft=1
 FullHeightButtonSpacingRight=1
@@ -66,7 +66,7 @@ InactiveTitleBarOpacity=100
 IntegratedRoundedRectangleBottomPadding=1
 KlassyDarkIconThemeInherits=breeze-dark
 KlassyIconThemeInherits=breeze
-KwinBorderSize=None
+KwinBorderSize=Normal
 LockButtonBehaviourActiveInactive=true
 LockButtonColorsActiveInactive=true
 LockButtonSpacingLeftRight=false
@@ -75,7 +75,7 @@ LockCloseButtonBehaviourInactive=true
 LockFullHeightButtonSpacingLeftRight=true
 LockFullHeightButtonWidthMargins=false
 LockThinWindowOutlineCustomColorActiveInactive=true
-LockThinWindowOutlineStyleActiveInactive=false
+LockThinWindowOutlineStyleActiveInactive=true
 LockTitleBarLeftRightMargins=true
 LockTitleBarTopBottomMargins=true
 NegativeCloseBackgroundHoverPressActive=false
@@ -134,8 +134,8 @@ ShowOutlineOnPressInactive=true
 SystemIconSize=SystemIcon16
 ThinWindowOutlineCustomColorActive=0,0,0
 ThinWindowOutlineCustomColorInactive=0,0,0
-ThinWindowOutlineStyleActive=WindowOutlineAccentColor
-ThinWindowOutlineStyleInactive=WindowOutlineAccentWithContrast
+ThinWindowOutlineStyleActive=WindowOutlineShadowColor
+ThinWindowOutlineStyleInactive=WindowOutlineShadowColor
 ThinWindowOutlineThickness=1.75
 TitleAlignment=AlignCenterFullWidth
 TitleBarBottomMargin=1.7
