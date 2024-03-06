@@ -23,6 +23,9 @@ panel.addWidget("org.kde.plasma.pager");
 var taskmanager = panel.addWidget("org.kde.plasma.taskmanager");
 taskmanager.currentConfigGroup = ["General"];
 taskmanager.writeConfig('launchers', 'preferred://filemanager,preferred://browser');
+taskmanager.reloadConfig(); //launchers don't get set unless reloadConfig() is called between writes
+taskmanager.writeConfig('separateLaunchers', false);
+taskmanager.reloadConfig();
 panel.addWidget("org.kde.plasma.systemtray");
 var digitalclock = panel.addWidget("org.kde.plasma.digitalclock");
 digitalclock.currentConfigGroup = ["Appearance"];

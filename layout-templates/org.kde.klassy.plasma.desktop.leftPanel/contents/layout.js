@@ -9,6 +9,7 @@ panel.addWidget("org.kde.plasma.pager");
 var taskmanager = panel.addWidget("org.kde.plasma.icontasks");
 taskmanager.currentConfigGroup = ["General"];
 taskmanager.writeConfig('launchers', 'preferred://filemanager,preferred://browser');
+taskmanager.reloadConfig();
 panel.addWidget("org.kde.plasma.systemtray");
 var digitalclock = panel.addWidget("org.kde.plasma.digitalclock");
 digitalclock.currentConfigGroup = ["Appearance"];
