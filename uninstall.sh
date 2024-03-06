@@ -20,6 +20,12 @@ uninstall() {
     sudo make uninstall && echo "Uninstalled successfully!"
 }
 
+cleanup() {
+    cd $ORIGINAL_DIR
+
+    sudo rm -rf build
+}
+
 # Recreate install manifest and uninstall
 install_and_uninstall() {
     sh install.sh &&
@@ -45,15 +51,11 @@ else
         # Remove normally
         echo Found $ORIGINAL_DIR/build/install_manifest.txt
         cd build &&
-        uninstall
+        uninstall &&
+        cleanup
     else
         # If no install manifest found
         echo Did not find $ORIGINAL_DIR/build/install_manifest.txt
-        confirm "(re)install and uninstall? [y/n]" && install_and_uninstall
+        confirm "(re)install and uninstall? [y/n]" && install_and_uninstall && cleanup
     fi
 fi
-
-cd $ORIGINAL_DIR
-
-# Clean up
-rm -rf build

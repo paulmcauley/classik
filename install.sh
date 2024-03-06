@@ -19,7 +19,7 @@ if [ -d "build" ]; then #uninstall any previous version first
         uninstall
     fi
     cd $ORIGINAL_DIR
-    rm -rf build
+    sudo rm -rf build
 fi
 
 cd $ORIGINAL_DIR
@@ -27,6 +27,6 @@ mkdir build
 cd build
 cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -DKDE_INSTALL_USE_QT_SYS_PATHS=ON
 make -j$(nproc)
-sudo make install
+sudo make install && echo "Installed successfully!"
 
 cd $ORIGINAL_DIR
