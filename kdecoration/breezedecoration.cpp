@@ -1243,7 +1243,7 @@ void Decoration::paintTitleBar(QPainter *painter, const QRect &repaintRegion)
     int separatorHeight;
     if ((separatorHeight = titleBarSeparatorHeight()) && titleBarSeparatorColor.isValid()) {
         // outline
-        painter->setRenderHint(QPainter::Antialiasing, false);
+        painter->setRenderHint(QPainter::Antialiasing);
         painter->setBrush(Qt::NoBrush);
         QPen p(titleBarSeparatorColor);
         p.setWidthF(qRound(devicePixelRatio(painter)));
