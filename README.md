@@ -52,7 +52,7 @@ _Klassy_ (formerly _ClassiK_/_ClassikStyles_) is a highly customizable binary Wi
 > ![Composite screenshot of thin window outlines with Contrast blended with accent colour (light)](screenshots/thin_window_outline_light_contrast_accent.png?raw=true "Composite screenshot of thin window outlines with Contrast blended with accent colour (light)")
 
 * Configurable scrollbars:
-> <img src="https://raw.githubusercontent.com/paulmcauley/klassy/master/screenshots/configurable_scrollbars.png" width="80%">![Default scrollbar animation](screenshots/scrollbar_mouseover.gif?raw=true "Default scrollbar animation")
+> <img src="screenshots/configurable_scrollbars.png" width="80%">![Default scrollbar animation](screenshots/scrollbar_mouseover.gif?raw=true "Default scrollbar animation")
 
 * Configurable animations
 
@@ -116,7 +116,7 @@ Uninstall build script:
 
 ## System icon theme
 To make your Plasma Desktop fully consistent, Klassy auto-generates "Klassy" and "Klassy Dark" system icon themes whenever a window-decoration setting changes. These add consistent titlebar button icons to certain minor context menus in Plasma, and also add consistent GTK application titlebar icons (for Firefox to have consistent titlebar icons on Wayland, it is recommended to set the system GNOME/GTK Application style to Adwaita as Breeze is buggy).
-> <img src="https://raw.githubusercontent.com/paulmcauley/classikstyles/paulmcauley/selectable_buttoniconstyles/screenshots/klassy_square_icons.png" alt="Screenshot of Klassy with  icon theme" width="512">
+> <img src="screenshots/klassy_square_icons.png" alt="Screenshot of Klassy with icon theme" width="512">
 
 These icons inherit the _Breeze_ icon theme by default, only overriding the titlebar button icons. Another icon theme may be inherited by changing the setting in the Window Decoration settings under the _System Icon Generation..._ button.
 
