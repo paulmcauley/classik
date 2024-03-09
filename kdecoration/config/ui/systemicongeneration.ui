@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>459</width>
-    <height>391</height>
+    <height>348</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
       <item alignment="Qt::AlignTop">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>The &quot;Klassy&quot; and &quot;Klassy Dark&quot; system icon themes are auto-generated.  These are used to provide the window control icons for right-click menus, other context menus, QQC2 applications and in GTK applications (window control icons from the system icon theme show in Wayland GTK applications if &quot;Adwaita&quot; is set as the GNOME/GTK Application style theme).
+         <string>The &quot;Klassy&quot; and &quot;Klassy Dark&quot; system icon themes are auto-generated.  These are used to provide window control icons in several places in Plasma.
 
 Icons unrelated to window control are inherited from another icon theme, as set below:</string>
         </property>
@@ -37,7 +37,7 @@ Icons unrelated to window control are inherited from another icon theme, as set 
         <item row="0" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Klassy icon theme inherits:</string>
+           <string>&amp;Klassy icon theme inherits:</string>
           </property>
           <property name="buddy">
            <cstring>klassyIconThemeInherits</cstring>
@@ -47,7 +47,7 @@ Icons unrelated to window control are inherited from another icon theme, as set 
         <item row="1" column="0">
          <widget class="QLabel" name="label_3">
           <property name="text">
-           <string>Klassy Dark icon theme inherits:</string>
+           <string>Klassy Dark &amp;icon theme inherits:</string>
           </property>
           <property name="buddy">
            <cstring>klassyDarkIconThemeInherits</cstring>
