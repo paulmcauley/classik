@@ -95,12 +95,10 @@ void DecorationColors::generateDecorationAndButtonColors(const QPalette &palette
                              titleBarBaseActive,
                              titleBarTextInactive,
                              titleBarBaseInactive,
-                             settingsUpdateUuid,
-                             generateOneGroupOnly,
-                             oneGroupActiveState);
+                             settingsUpdateUuid);
 
     for (auto i = m_buttonPalettes->begin(); i != m_buttonPalettes->end(); i++) {
-        i->second.generate(decorationSettings, this, generateOneGroupOnly, oneGroupActiveState);
+        i->second.generate(decorationSettings, this->active(), this->inactive(), generateOneGroupOnly, oneGroupActiveState);
     }
 }
 

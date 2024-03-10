@@ -350,7 +350,7 @@ QColor Button::foregroundNormalActiveStateAnimated(const bool active, const bool
             return QColor();
         }
     } else {
-        DecorationButtonPaletteGroup *group = active ? m_buttonPalette->active() : m_buttonPalette->inactive();
+        const DecorationButtonPaletteGroup *group = active ? m_buttonPalette->active() : m_buttonPalette->inactive();
         return group->foregroundNormal;
     }
 }
@@ -370,7 +370,7 @@ QColor Button::foregroundHoverActiveStateAnimated(const bool active, const bool 
             return QColor();
         }
     } else {
-        DecorationButtonPaletteGroup *group = active ? m_buttonPalette->active() : m_buttonPalette->inactive();
+        const DecorationButtonPaletteGroup *group = active ? m_buttonPalette->active() : m_buttonPalette->inactive();
         return group->foregroundHover;
     }
 }
@@ -389,7 +389,7 @@ QColor Button::foregroundPressActiveStateAnimated(const bool active, const bool 
         } else
             return QColor();
     } else {
-        DecorationButtonPaletteGroup *group = active ? m_buttonPalette->active() : m_buttonPalette->inactive();
+        const DecorationButtonPaletteGroup *group = active ? m_buttonPalette->active() : m_buttonPalette->inactive();
         return group->foregroundPress;
     }
 }
@@ -447,7 +447,7 @@ QColor Button::backgroundNormalActiveStateAnimated(const bool active, const bool
             return QColor();
         }
     } else {
-        DecorationButtonPaletteGroup *group = active ? m_buttonPalette->active() : m_buttonPalette->inactive();
+        const DecorationButtonPaletteGroup *group = active ? m_buttonPalette->active() : m_buttonPalette->inactive();
         return group->backgroundNormal;
     }
 }
@@ -467,7 +467,7 @@ QColor Button::backgroundHoverActiveStateAnimated(const bool active, const bool 
             return QColor();
         }
     } else {
-        DecorationButtonPaletteGroup *group = active ? m_buttonPalette->active() : m_buttonPalette->inactive();
+        const DecorationButtonPaletteGroup *group = active ? m_buttonPalette->active() : m_buttonPalette->inactive();
         return group->backgroundHover;
     }
 }
@@ -486,7 +486,7 @@ QColor Button::backgroundPressActiveStateAnimated(const bool active, const bool 
         } else
             return QColor();
     } else {
-        DecorationButtonPaletteGroup *group = active ? m_buttonPalette->active() : m_buttonPalette->inactive();
+        const DecorationButtonPaletteGroup *group = active ? m_buttonPalette->active() : m_buttonPalette->inactive();
         return group->backgroundPress;
     }
 }
@@ -543,7 +543,7 @@ QColor Button::outlineNormalActiveStateAnimated(const bool active, const bool ge
             return QColor();
         }
     } else {
-        DecorationButtonPaletteGroup *group = active ? m_buttonPalette->active() : m_buttonPalette->inactive();
+        const DecorationButtonPaletteGroup *group = active ? m_buttonPalette->active() : m_buttonPalette->inactive();
         return group->outlineNormal;
     }
 }
@@ -563,7 +563,7 @@ QColor Button::outlineHoverActiveStateAnimated(const bool active, const bool get
             return QColor();
         }
     } else {
-        DecorationButtonPaletteGroup *group = active ? m_buttonPalette->active() : m_buttonPalette->inactive();
+        const DecorationButtonPaletteGroup *group = active ? m_buttonPalette->active() : m_buttonPalette->inactive();
         return group->outlineHover;
     }
 }
@@ -582,7 +582,7 @@ QColor Button::outlinePressActiveStateAnimated(const bool active, const bool get
         } else
             return QColor();
     } else {
-        DecorationButtonPaletteGroup *group = active ? m_buttonPalette->active() : m_buttonPalette->inactive();
+        const DecorationButtonPaletteGroup *group = active ? m_buttonPalette->active() : m_buttonPalette->inactive();
         return group->outlinePress;
     }
 }

@@ -24,12 +24,14 @@ DecorationButtonPalette::DecorationButtonPalette(KDecoration2::DecorationButtonT
 }
 
 void DecorationButtonPalette::generate(InternalSettingsPtr decorationSettings,
-                                       DecorationColors *decorationColors,
+                                       const DecorationPaletteGroup *decorationColorsActive,
+                                       const DecorationPaletteGroup *decorationColorsInactive,
                                        const bool generateOneGroupOnly,
                                        const bool oneGroupActiveState)
 {
     _decorationSettings = decorationSettings;
-    _decorationColors = decorationColors;
+    _decorationColorsActive = decorationColorsActive;
+    _decorationColorsInactive = decorationColorsInactive;
 
     if (!(generateOneGroupOnly && !oneGroupActiveState)) { // active
         decodeButtonOverrideColors(true);
@@ -95,7 +97,7 @@ void DecorationButtonPalette::decodeButtonOverrideColors(const bool active)
             if (overrideColorItemsIndex == 0)
                 break;
 
-            color = overrideColorItemsIndexToColor(_decorationColors, overrideColorItemsIndex, active);
+            color = overrideColorItemsIndexToColor(_decorationColorsActive, _decorationColorsInactive, overrideColorItemsIndex, active);
             if (!color.isValid())
                 break;
 
@@ -111,7 +113,7 @@ void DecorationButtonPalette::decodeButtonOverrideColors(const bool active)
             if (overrideColorItemsIndex == 0)
                 break;
 
-            color = overrideColorItemsIndexToColor(_decorationColors, overrideColorItemsIndex, active);
+            color = overrideColorItemsIndexToColor(_decorationColorsActive, _decorationColorsInactive, overrideColorItemsIndex, active);
             if (!color.isValid())
                 break;
 
@@ -166,7 +168,10 @@ void DecorationButtonPalette::decodeButtonOverrideColors(const bool active)
     buttonOverrideColorsPresent = overrideColorLoaded;
 }
 
-QColor DecorationButtonPalette::overrideColorItemsIndexToColor(const DecorationColors *decorationColors, const int overrideColorItemsIndex, const bool active)
+QColor DecorationButtonPalette::overrideColorItemsIndexToColor(const DecorationPaletteGroup *decorationColorsActive,
+                                                               const DecorationPaletteGroup *decorationColorsInactive,
+                                                               const int overrideColorItemsIndex,
+                                                               const bool active)
 {
     switch (overrideColorItemsIndex) {
     default:
@@ -174,59 +179,59 @@ QColor DecorationButtonPalette::overrideColorItemsIndexToColor(const DecorationC
     case 0:
         return Qt::transparent;
     case 1:
-        return active ? decorationColors->active()->titleBarText : decorationColors->inactive()->titleBarText;
+        return active ? decorationColorsActive->titleBarText : decorationColorsInactive->titleBarText;
     case 2:
-        return decorationColors->active()->titleBarText;
+        return decorationColorsActive->titleBarText;
     case 3:
-        return decorationColors->inactive()->titleBarText;
+        return decorationColorsInactive->titleBarText;
     case 4:
-        return active ? decorationColors->active()->titleBarBase : decorationColors->inactive()->titleBarBase;
+        return active ? decorationColorsActive->titleBarBase : decorationColorsInactive->titleBarBase;
     case 5:
-        return decorationColors->active()->titleBarBase;
+        return decorationColorsActive->titleBarBase;
     case 6:
-        return decorationColors->inactive()->titleBarBase;
+        return decorationColorsInactive->titleBarBase;
     case 7:
-        return decorationColors->active()->buttonFocus;
+        return decorationColorsActive->buttonFocus;
     case 8:
-        return decorationColors->active()->buttonHover;
+        return decorationColorsActive->buttonHover;
     case 9:
-        return decorationColors->active()->highlight;
+        return decorationColorsActive->highlight;
     case 10:
-        return decorationColors->active()->highlightLessSaturated;
+        return decorationColorsActive->highlightLessSaturated;
     case 11:
-        return decorationColors->active()->negative;
+        return decorationColorsActive->negative;
     case 12:
-        return decorationColors->active()->negativeLessSaturated;
+        return decorationColorsActive->negativeLessSaturated;
     case 13:
-        return decorationColors->active()->negativeSaturated;
+        return decorationColorsActive->negativeSaturated;
     case 14:
-        return decorationColors->active()->fullySaturatedNegative;
+        return decorationColorsActive->fullySaturatedNegative;
     case 15:
-        return decorationColors->active()->neutral;
+        return decorationColorsActive->neutral;
     case 16:
-        return decorationColors->active()->neutralLessSaturated;
+        return decorationColorsActive->neutralLessSaturated;
     case 17:
-        return decorationColors->active()->neutralSaturated;
+        return decorationColorsActive->neutralSaturated;
     case 18:
-        return decorationColors->active()->positive;
+        return decorationColorsActive->positive;
     case 19:
-        return decorationColors->active()->positiveLessSaturated;
+        return decorationColorsActive->positiveLessSaturated;
     case 20:
-        return decorationColors->active()->positiveSaturated;
+        return decorationColorsActive->positiveSaturated;
     case 21:
         return Qt::white;
     case 22:
-        return active ? decorationColors->active()->windowOutline : decorationColors->inactive()->windowOutline;
+        return active ? decorationColorsActive->windowOutline : decorationColorsInactive->windowOutline;
     case 23:
-        return decorationColors->active()->windowOutline;
+        return decorationColorsActive->windowOutline;
     case 24:
-        return decorationColors->inactive()->windowOutline;
+        return decorationColorsInactive->windowOutline;
     case 25:
-        return active ? decorationColors->active()->shadow : decorationColors->inactive()->shadow;
+        return active ? decorationColorsActive->shadow : decorationColorsInactive->shadow;
     case 26:
-        return decorationColors->active()->shadow;
+        return decorationColorsActive->shadow;
     case 27:
-        return decorationColors->inactive()->shadow;
+        return decorationColorsInactive->shadow;
     }
 }
 
@@ -237,7 +242,7 @@ void DecorationButtonPalette::generateBistateColors(ButtonComponent component,
                                                     QColor &bistate2,
                                                     QColor accentHoverBase)
 {
-    DecorationPaletteGroup *decorationColors = active ? _decorationColors->active() : _decorationColors->inactive();
+    const DecorationPaletteGroup *decorationColors = active ? _decorationColorsActive : _decorationColorsInactive;
     bool isClose = _buttonType == DecorationButtonType::Close;
 
     qreal baseOpacity;
@@ -328,7 +333,7 @@ void DecorationButtonPalette::generateTristateColors(ButtonComponent component,
                                                      QColor &tristate3,
                                                      QColor accentHoverBase)
 {
-    DecorationPaletteGroup *decorationColors = active ? _decorationColors->active() : _decorationColors->inactive();
+    const DecorationPaletteGroup *decorationColors = active ? _decorationColorsActive : _decorationColorsInactive;
     bool isClose = _buttonType == DecorationButtonType::Close;
 
     qreal baseOpacity;
@@ -430,9 +435,9 @@ void DecorationButtonPalette::generateButtonBackgroundPalette(const bool active)
     QColor &backgroundNormal = group->backgroundNormal;
     QColor &backgroundHover = group->backgroundHover;
     QColor &backgroundPress = group->backgroundPress;
-    DecorationPaletteGroup *decorationColors = active ? _decorationColors->active() : _decorationColors->inactive();
-    QColor &titleBarText = decorationColors->titleBarText;
-    QColor &titleBarBase = decorationColors->titleBarBase;
+    const DecorationPaletteGroup *decorationColors = active ? _decorationColorsActive : _decorationColorsInactive;
+    const QColor &titleBarText = decorationColors->titleBarText;
+    const QColor &titleBarBase = decorationColors->titleBarBase;
 
     const int buttonBackgroundColors = _decorationSettings->buttonBackgroundColors(active);
     const bool negativeCloseBackgroundHoverPress = _decorationSettings->negativeCloseBackgroundHoverPress(active);
@@ -602,7 +607,7 @@ void DecorationButtonPalette::generateButtonForegroundPalette(const bool active)
     QColor &foregroundNormal = group->foregroundNormal;
     QColor &foregroundHover = group->foregroundHover;
     QColor &foregroundPress = group->foregroundPress;
-    DecorationPaletteGroup *decorationColors = active ? _decorationColors->active() : _decorationColors->inactive();
+    const DecorationPaletteGroup *decorationColors = active ? _decorationColorsActive : _decorationColorsInactive;
 
     foregroundNormal = QColor();
     foregroundHover = QColor();
@@ -852,9 +857,9 @@ void DecorationButtonPalette::generateButtonOutlinePalette(const bool active)
     QColor &outlineNormal = group->outlineNormal;
     QColor &outlineHover = group->outlineHover;
     QColor &outlinePress = group->outlinePress;
-    DecorationPaletteGroup *decorationColors = active ? _decorationColors->active() : _decorationColors->inactive();
-    QColor &text = decorationColors->titleBarText;
-    QColor &base = decorationColors->titleBarBase;
+    const DecorationPaletteGroup *decorationColors = active ? _decorationColorsActive : _decorationColorsInactive;
+    const QColor &text = decorationColors->titleBarText;
+    const QColor &base = decorationColors->titleBarBase;
 
     const int buttonBackgroundColors = _decorationSettings->buttonBackgroundColors(active);
     const bool negativeCloseBackgroundHoverPress = _decorationSettings->negativeCloseBackgroundHoverPress(active);

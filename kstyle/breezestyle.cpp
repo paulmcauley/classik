@@ -7965,10 +7965,6 @@ QIcon Style::titleBarButtonIcon(StandardPixmap standardPixmap, const QStyleOptio
         palette = QApplication::palette();
     }
 
-    // active button states which are used for MDI titlebars only
-    DecorationButtonPalette decorationButtonPaletteMdi(buttonType);
-    decorationButtonPaletteMdi.generate(_helper->decorationConfig(), _helper->decorationColors(), true, true); //generate active button colours only
-
     //generate a different DecorationColors for buttons on a toolbar. These set the titlebar background to the toolbar background, and use the inactive button states
     DecorationColors decorationColorsToolbar(false, true);
     palette.setCurrentColorGroup(QPalette::Active);
@@ -7977,7 +7973,19 @@ QIcon Style::titleBarButtonIcon(StandardPixmap standardPixmap, const QStyleOptio
     //generate inactive decoration colours only
     decorationColorsToolbar.generateDecorationColors(palette, _helper->decorationConfig(), QColor(), QColor(), toolbarText, toolbarBase, "", true, false);
     DecorationButtonPalette decorationButtonPaletteToolbar(buttonType);
-    decorationButtonPaletteToolbar.generate(_helper->decorationConfig(), &decorationColorsToolbar, true, false); //generate inactive button colours only);
+    decorationButtonPaletteToolbar.generate(_helper->decorationConfig(),
+                                            _helper->decorationColors()->active(),
+                                            decorationColorsToolbar.inactive(),
+                                            true,
+                                            false); // generate inactive button colours only);
+
+    // active button states which are used for MDI titlebars only
+    DecorationButtonPalette decorationButtonPaletteMdi(buttonType);
+    decorationButtonPaletteMdi.generate(_helper->decorationConfig(),
+                                        _helper->decorationColors()->active(),
+                                        decorationColorsToolbar.inactive(),
+                                        true,
+                                        true); // generate active button colours only
 
     // convenience class to map color to icon mode
     struct IconData {

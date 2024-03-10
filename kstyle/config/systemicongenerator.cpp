@@ -44,8 +44,8 @@ void SystemIconGenerator::generate()
                                                             m_internalSettings,
                                                             QColor(QStringLiteral("#232629")),
                                                             QColor(QStringLiteral("#dee0e2")),
-                                                            QColor(),
-                                                            QColor(),
+                                                            QColor(QStringLiteral("#232629")),
+                                                            QColor(QStringLiteral("#dee0e2")),
                                                             "",
                                                             true,
                                                             true); // titlebar colours based on Breeze Light
@@ -57,8 +57,8 @@ void SystemIconGenerator::generate()
                                                            m_internalSettings,
                                                            QColor(QStringLiteral("#fcfcfc")),
                                                            QColor(QStringLiteral("#31363b")),
-                                                           QColor(),
-                                                           QColor(),
+                                                           QColor(QStringLiteral("#fcfcfc")),
+                                                           QColor(QStringLiteral("#31363b")),
                                                            "",
                                                            true,
                                                            true); // titlebar colours based on Breeze Dark
