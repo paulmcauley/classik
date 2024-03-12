@@ -597,7 +597,7 @@ bool Button::titlebarTextPinnedInversion() const
 
     return type() == DecorationButtonType::OnAllDesktops
         && m_d->internalSettings()->buttonIconStyle() != InternalSettings::EnumButtonIconStyle::StyleSystemIconTheme
-        && (m_d->internalSettings()->buttonBackgroundOpacity(active) == 100 && m_d->internalSettings()->buttonIconOpacity(active) == 100
+        && (m_d->internalSettings()->buttonBackgroundOpacity(active) > 50 && m_d->internalSettings()->buttonIconOpacity(active) > 50
             && (((m_d->internalSettings()->buttonBackgroundColors(active) == InternalSettings::EnumButtonBackgroundColors::TitleBarText
                   || m_d->internalSettings()->buttonBackgroundColors(active) == InternalSettings::EnumButtonBackgroundColors::TitleBarTextNegativeClose)
                  && (m_d->internalSettings()->buttonIconColors(active) == InternalSettings::EnumButtonIconColors::TitleBarText
