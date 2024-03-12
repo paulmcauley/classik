@@ -855,17 +855,28 @@ void Decoration::updateButtonsGeometry()
                 bHeightMenuGrouped = bHeightNormal;
             }
             bHeightNormal = qMax(bHeightNormal - m_scaledIntegratedRoundedRectangleBottomPadding, 0.0);
-            qreal shrinkOffsetWithOutline = 0;
-            if (m_internalSettings->showOutlineNormally(true) || m_internalSettings->showOutlineOnHover(true) || m_internalSettings->showOutlineOnPress(true)
-                || m_internalSettings->showOutlineNormally(false) || m_internalSettings->showOutlineOnHover(false)
-                || m_internalSettings->showOutlineOnPress(false)) {
-                shrinkOffsetWithOutline = PenWidth::Symbol / 2;
+
+            qreal shiftUpWithOutline = 0; // how much to shift up the icon to appear more centred - only do when there is a colorizeThinWindowOutlineWithButton
+                                          // or not window outline none/shadow
+            if (((m_internalSettings->showOutlineOnHover(true) || m_internalSettings->showOutlineOnHover(false))
+                 && (m_internalSettings->colorizeThinWindowOutlineWithButton()
+                     || !((m_internalSettings->thinWindowOutlineStyle(true) == InternalSettings::EnumThinWindowOutlineStyle::WindowOutlineNone
+                           || m_internalSettings->thinWindowOutlineStyle(true) == InternalSettings::EnumThinWindowOutlineStyle::WindowOutlineShadowColor)
+                          && (m_internalSettings->thinWindowOutlineStyle(false) == InternalSettings::EnumThinWindowOutlineStyle::WindowOutlineNone
+                              || m_internalSettings->thinWindowOutlineStyle(false) == InternalSettings::EnumThinWindowOutlineStyle::WindowOutlineShadowColor))))
+                || ((m_internalSettings->showOutlineNormally(true) || m_internalSettings->showOutlineNormally(false))
+                    && !(
+                        (m_internalSettings->thinWindowOutlineStyle(true) == InternalSettings::EnumThinWindowOutlineStyle::WindowOutlineNone
+                         || m_internalSettings->thinWindowOutlineStyle(true) == InternalSettings::EnumThinWindowOutlineStyle::WindowOutlineShadowColor)
+                        && (m_internalSettings->thinWindowOutlineStyle(false) == InternalSettings::EnumThinWindowOutlineStyle::WindowOutlineNone
+                            || m_internalSettings->thinWindowOutlineStyle(false) == InternalSettings::EnumThinWindowOutlineStyle::WindowOutlineShadowColor)))) {
+                shiftUpWithOutline = PenWidth::Symbol / 2;
                 if (KWindowSystem::isPlatformX11()) {
-                    shrinkOffsetWithOutline *= m_systemScaleFactorX11;
+                    shiftUpWithOutline *= m_systemScaleFactorX11;
                 }
             }
-            verticalIconOffsetNormal = buttonTopMargin + (captionHeight() - m_smallButtonPaddedHeight) / 2 - m_scaledIntegratedRoundedRectangleBottomPadding / 2
-                - shrinkOffsetWithOutline;
+            verticalIconOffsetNormal =
+                buttonTopMargin + (captionHeight() - m_smallButtonPaddedHeight) / 2 - m_scaledIntegratedRoundedRectangleBottomPadding / 2 - shiftUpWithOutline;
             if (internalSettings()->buttonShape() == InternalSettings::EnumButtonShape::ShapeIntegratedRoundedRectangleGrouped) {
                 verticalIconOffsetMenuGrouped = buttonTopMargin + (captionHeight() - m_smallButtonPaddedHeight) / 2;
             }
