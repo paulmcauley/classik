@@ -18,15 +18,16 @@ void SystemIconTheme::paintIconFromSystemTheme(QString iconName)
 {
     QColor color = m_painter->pen().color();
 
-    KIconLoader iconLoader;
-
+    KIconLoader *iconLoader = KIconLoader::global();
+    QPalette originalPalette;
     if (!m_internalSettings->forceColorizeSystemIcons()) {
+        originalPalette = iconLoader->customPalette();
         m_palette.setColor(QPalette::WindowText, color);
-        iconLoader.setCustomPalette(m_palette);
+        iconLoader->setCustomPalette(m_palette);
     }
 
     int m_iconWidthScaled = qRound(m_iconWidth * m_painter->device()->devicePixelRatioF());
-    QPixmap iconPixmap = iconLoader.loadIcon(iconName, KIconLoader::Group::NoGroup, m_iconWidthScaled);
+    QPixmap iconPixmap = iconLoader->loadIcon(iconName, KIconLoader::Group::NoGroup, m_iconWidthScaled);
     iconPixmap.setDevicePixelRatio(m_painter->device()->devicePixelRatioF());
     QSize pixmapSize(m_iconWidth, m_iconWidth);
     QRect rect(QPoint(0, 0), pixmapSize);
@@ -37,8 +38,15 @@ void SystemIconTheme::paintIconFromSystemTheme(QString iconName)
         ColorTools::convertAlphaToColor(iconImage, color);
 
         m_painter->drawImage(rect, iconImage);
-    } else
+    } else {
         m_painter->drawPixmap(rect, iconPixmap);
+
+        if (originalPalette == QPalette()) {
+            iconLoader->resetPalette();
+        } else {
+            iconLoader->setCustomPalette(originalPalette);
+        }
+    }
 }
 
 void SystemIconTheme::renderIcon()

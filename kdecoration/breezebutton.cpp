@@ -184,15 +184,17 @@ void Button::paint(QPainter *painter, const QRect &repaintRegion)
 
         const QRectF iconRect(geometry().topLeft(), m_iconSize);
 
-        const QPalette originalPalette = KIconLoader::global()->customPalette();
+        KIconLoader *iconLoader = KIconLoader::global();
+        const QPalette originalPalette = iconLoader->customPalette();
         QPalette palette = c->palette();
         palette.setColor(QPalette::WindowText, m_foregroundColor);
-        KIconLoader::global()->setCustomPalette(palette);
+
+        iconLoader->setCustomPalette(palette);
         c->icon().paint(painter, iconRect.toRect());
         if (originalPalette == QPalette()) {
-            KIconLoader::global()->resetPalette();
+            iconLoader->resetPalette();
         } else {
-            KIconLoader::global()->setCustomPalette(originalPalette);
+            iconLoader->setCustomPalette(originalPalette);
         }
 
     } else {
