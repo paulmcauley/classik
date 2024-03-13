@@ -97,6 +97,9 @@ sudo pacman -S git kdecoration qt5-declarative qt5-x11extras cmake make gcc extr
 #### Fedora build dependencies
 ```
 sudo dnf install cmake extra-cmake-modules
+```
+
+```
 sudo dnf install "cmake(Qt5Core)" "cmake(Qt5Gui)" "cmake(Qt5DBus)" "cmake(Qt5X11Extras)" "cmake(KF5GuiAddons)" "cmake(KF5WindowSystem)" "cmake(KF5I18n)" "cmake(KDecoration2)" "cmake(KF5CoreAddons)" "cmake(KF5ConfigWidgets)" "cmake(KF5IconThemes)" "cmake(KF5Package)" "cmake(Qt5Quick)" "cmake(KF5FrameworkIntegration)" "cmake(KF5KCMUtils)" "cmake(KF5Kirigami2)" "cmake(Qt5Svg)"
 ```
 
@@ -104,8 +107,17 @@ sudo dnf install "cmake(Qt5Core)" "cmake(Qt5Gui)" "cmake(Qt5DBus)" "cmake(Qt5X11
 Download build and install from source script:
 ```
 git clone https://github.com/paulmcauley/klassy
+```
+
+```
 cd klassy
+```
+
+```
 git checkout 5.1.breeze5.27.11
+```
+
+```
 ./install.sh
 ```
 
