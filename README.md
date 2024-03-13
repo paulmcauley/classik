@@ -81,17 +81,17 @@ Raw .rpm, .deb etc. binary packages are also available from the Open Build Servi
 ### Step 1: First, Install Dependencies
 #### OpenSUSE Tumbleweed/Leap build dependencies
 ```
-sudo zypper in cmake extra-cmake-modules libQt5Core-devel libQt5Gui-devel libQt5DBus-devel libqt5-qtx11extras-devel libkdecoration2-devel kcoreaddons-devel kguiaddons-devel kconfigwidgets-devel kwindowsystem-devel ki18n-devel kiconthemes-devel kpackage-devel libQt5QuickControls2-devel frameworkintegration-devel kcmutils-devel kirigami2-devel libqt5-qtsvg-devel libQt5Xml-devel
+sudo zypper in git cmake extra-cmake-modules libQt5Core-devel libQt5Gui-devel libQt5DBus-devel libqt5-qtx11extras-devel libkdecoration2-devel kcoreaddons-devel kguiaddons-devel kconfigwidgets-devel kwindowsystem-devel ki18n-devel kiconthemes-devel kpackage-devel libQt5QuickControls2-devel frameworkintegration-devel kcmutils-devel kirigami2-devel libqt5-qtsvg-devel libQt5Xml-devel
 ```
 
 #### Debian/Ubuntu/KDE Neon build dependencies
 ```
-sudo apt install build-essential libkf5config-dev libkdecorations2-dev libqt5x11extras5-dev qtdeclarative5-dev extra-cmake-modules libkf5guiaddons-dev libkf5configwidgets-dev libkf5windowsystem-dev libkf5coreaddons-dev gettext cmake libkf5iconthemes-dev libkf5package-dev libkf5style-dev libkf5kcmutils-dev kirigami2-dev libqt5svg5-dev
+sudo apt install git build-essential libkf5config-dev libkdecorations2-dev libqt5x11extras5-dev qtdeclarative5-dev extra-cmake-modules libkf5guiaddons-dev libkf5configwidgets-dev libkf5windowsystem-dev libkf5coreaddons-dev gettext cmake libkf5iconthemes-dev libkf5package-dev libkf5style-dev libkf5kcmutils-dev kirigami2-dev libqt5svg5-dev
 ```
 
 #### Arch/Manjaro build dependencies
 ```
-sudo pacman -S kdecoration qt5-declarative qt5-x11extras cmake make gcc extra-cmake-modules
+sudo pacman -S git kdecoration qt5-declarative qt5-x11extras cmake make gcc extra-cmake-modules
 ```
 
 #### Fedora build dependencies
@@ -100,9 +100,12 @@ sudo dnf install cmake extra-cmake-modules
 sudo dnf install "cmake(Qt5Core)" "cmake(Qt5Gui)" "cmake(Qt5DBus)" "cmake(Qt5X11Extras)" "cmake(KF5GuiAddons)" "cmake(KF5WindowSystem)" "cmake(KF5I18n)" "cmake(KDecoration2)" "cmake(KF5CoreAddons)" "cmake(KF5ConfigWidgets)" "cmake(KF5IconThemes)" "cmake(KF5Package)" "cmake(Qt5Quick)" "cmake(KF5FrameworkIntegration)" "cmake(KF5KCMUtils)" "cmake(KF5Kirigami2)" "cmake(Qt5Svg)"
 ```
 
-### Step 2: Then, build and install
-Build and install from source script:
+### Step 2: Then download, build and install
+Download build and install from source script:
 ```
+git clone https://github.com/paulmcauley/klassy
+cd klassy
+git checkout 5.1.breeze5.27.11
 ./install.sh
 ```
 
