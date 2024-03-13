@@ -104,7 +104,7 @@ sudo dnf install "cmake(Qt5Core)" "cmake(Qt5Gui)" "cmake(Qt5DBus)" "cmake(Qt5X11
 ```
 
 ### Step 2: Then download, build and install
-Download build and install from source script:
+Download, build and install from source script:
 ```
 git clone https://github.com/paulmcauley/klassy
 ```
