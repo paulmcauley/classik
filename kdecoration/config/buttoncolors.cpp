@@ -2251,7 +2251,11 @@ void ButtonColors::setHorizontalHeaderSectionIcon(KDecoration2::DecorationButton
         painter->setRenderHints(QPainter::RenderHint::Antialiasing);
 
         if (renderSystemIcon) {
-            SystemIconTheme systemIconRenderer(painter.get(), 16, iconName, m_internalSettings, QApplication::palette());
+            SystemIconTheme systemIconRenderer(painter.get(),
+                                               16,
+                                               iconName,
+                                               m_internalSettings,
+                                               m_internalSettings->forceColorizeSystemIcons() ? QPalette() : QApplication::palette());
             systemIconRenderer.renderIcon();
         } else {
             auto [iconRenderer, localRenderingWidth](RenderDecorationButtonIcon::factory(m_internalSettings, painter.get(), true, true, dpr));

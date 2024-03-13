@@ -64,7 +64,7 @@
     
     <!-- colourize icons from system icon theme -->
     <entry name="ForceColorizeSystemIcons" type = "Bool">
-        <default>false</default>
+        <default>true</default>
     </entry>
 
     <!-- bold button icons -->

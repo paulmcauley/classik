@@ -1555,7 +1555,11 @@ void Helper::renderDecorationButton(QPainter *painter,
 
         if (!systemIconName.isEmpty()) {
             painter->setWindow(rect);
-            SystemIconTheme iconRenderer(painter, rect.width(), systemIconName, decorationConfig(), palette);
+            SystemIconTheme iconRenderer(painter,
+                                         rect.width(),
+                                         systemIconName,
+                                         decorationConfig(),
+                                         decorationConfig()->forceColorizeSystemIcons() ? QPalette() : palette);
             iconRenderer.renderIcon();
         } else {
             auto [iconRenderer, localRenderingWidth] = RenderDecorationButtonIcon::factory(decorationConfig(), painter, true, false, 1, QPointF(0, 0), true);

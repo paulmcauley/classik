@@ -274,7 +274,11 @@ void Button::drawIcon(QPainter *painter) const
         Q_ASSERT(c);
         QString systemIconName;
         systemIconName = isChecked() ? m_systemIconCheckedName : m_systemIconName;
-        SystemIconTheme iconRenderer(painter, iconWidth, systemIconName, m_d->internalSettings(), c->palette());
+        SystemIconTheme iconRenderer(painter,
+                                     iconWidth,
+                                     systemIconName,
+                                     m_d->internalSettings(),
+                                     m_d->internalSettings()->forceColorizeSystemIcons() ? QPalette() : c->palette());
         iconRenderer.renderIcon();
     } else {
         // at loDPI backgrounds are even, therefore need an even icon in such circumstances for correct centring
