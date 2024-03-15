@@ -347,13 +347,13 @@ void RenderDecorationButtonIcon18By18::renderApplicationMenuIcon()
         qreal width = rightTop.x() - leftTop.x();
 
         QPainterPath topPath;
-        topPath.addPolygon(QVector{leftTop, rightTop});
+        topPath.addPolygon(QVector<QPointF>{leftTop, rightTop});
         top->setPath(topPath);
         QPainterPath middlePath;
-        middlePath.addPolygon(QVector{leftMiddle, QPointF(leftMiddle.x() + width, leftMiddle.y())});
+        middlePath.addPolygon(QVector<QPointF>{leftMiddle, QPointF(leftMiddle.x() + width, leftMiddle.y())});
         middle->setPath(middlePath);
         QPainterPath bottomPath;
-        bottomPath.addPolygon(QVector{leftBottom, QPointF(leftBottom.x() + width, leftBottom.y())});
+        bottomPath.addPolygon(QVector<QPointF>{leftBottom, QPointF(leftBottom.x() + width, leftBottom.y())});
         bottom->setPath(bottomPath);
     } else {
         QPointF leftTop = snapToNearestPixel(QPointF(3.5, 4.5), SnapPixel::ToWhole, SnapPixel::ToWhole);
@@ -368,13 +368,13 @@ void RenderDecorationButtonIcon18By18::renderApplicationMenuIcon()
         qreal width = rightTop.x() - leftTop.x();
 
         QPainterPath topPath;
-        topPath.addPolygon(QVector{leftTop, rightTop});
+        topPath.addPolygon(QVector<QPointF>{leftTop, rightTop});
         top->setPath(topPath);
         QPainterPath middlePath;
-        middlePath.addPolygon(QVector{leftMiddle, QPointF(leftMiddle.x() + width, leftMiddle.y())});
+        middlePath.addPolygon(QVector<QPointF>{leftMiddle, QPointF(leftMiddle.x() + width, leftMiddle.y())});
         middle->setPath(middlePath);
         QPainterPath bottomPath;
-        bottomPath.addPolygon(QVector{leftBottom, QPointF(leftBottom.x() + width, leftBottom.y())});
+        bottomPath.addPolygon(QVector<QPointF>{leftBottom, QPointF(leftBottom.x() + width, leftBottom.y())});
         bottom->setPath(bottomPath);
     }
 
