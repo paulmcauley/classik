@@ -96,7 +96,7 @@ sudo pacman -S git kdecoration qt5-declarative qt5-x11extras cmake make gcc extr
 
 #### Fedora build dependencies
 ```
-sudo dnf install cmake extra-cmake-modules
+sudo dnf install git cmake extra-cmake-modules
 ```
 
 ```
