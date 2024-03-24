@@ -21,4 +21,4 @@ library=org.kde.klassy
 theme=Klassy
 
 [plasmarc][Theme]
-name=breeze-dark
+name=klassy

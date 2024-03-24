@@ -1,0 +1,17 @@
+[Settings]
+FallbackTheme=breeze-dark
+
+[Wallpaper]
+defaultWallpaperTheme=Next
+defaultFileSuffix=.png
+defaultWidth=1920
+defaultHeight=1080
+
+[ContrastEffect]
+enabled=true
+contrast=0.2
+intensity=0.6
+saturation=10
+
+[AdaptiveTransparency]
+enabled=true

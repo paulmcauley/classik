@@ -1,0 +1,19 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "kde@paulmcauley.com",
+                "Name": "Paul A McAuley"
+            }
+        ],
+        "Category": "",
+        "Description": "Klassy by Paul A McAuley (Breeze Dark with tweaked vertical panel margins)",
+        "EnabledByDefault": true,
+        "Id": "klassy",
+        "License": "LGPL",
+        "Name": "Klassy",
+        "Version": "6.1",
+        "Website": "https://github.com/paulmcauley/klassy"
+    },
+    "X-Plasma-API": "5.0"
+}

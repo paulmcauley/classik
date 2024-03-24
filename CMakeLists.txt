@@ -46,6 +46,7 @@ add_subdirectory(icons)
 add_subdirectory(colors)
 add_subdirectory(layout-templates)
 add_subdirectory(look-and-feel)
+add_subdirectory(desktoptheme)
 
 if(EXISTS ${CMAKE_SOURCE_DIR}/po AND IS_DIRECTORY ${CMAKE_SOURCE_DIR}/po)
     find_package(KF5I18n ${KF5_MIN_VERSION} CONFIG REQUIRED)
