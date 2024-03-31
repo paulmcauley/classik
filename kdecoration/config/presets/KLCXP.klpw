@@ -1,5 +1,5 @@
 [Klassy Window Decoration Preset File]
-version=5.1.breeze5.27.11
+version=5.2.breeze5.27.11.git
 
 [Windeco Preset KLCXP]
 ActiveTitleBarOpacity=100
@@ -20,7 +20,7 @@ ButtonIconColorsActive=TitleBarText
 ButtonIconColorsInactive=TitleBarText
 ButtonIconOpacityActive=100
 ButtonIconOpacityInactive=100
-ButtonIconStyle=StyleRedmond
+ButtonIconStyle=StyleTraditional
 ButtonOverrideColorsActiveApplicationMenu=
 ButtonOverrideColorsActiveClose=
 ButtonOverrideColorsActiveContextHelp=

@@ -1,7 +1,7 @@
 [Klassy Window Decoration Preset File]
-version=5.1.breeze5.27.11
+version=5.2.breeze5.27.11.git
 
-[Windeco Preset Klassy Twilight - bottom panel]
+[Windeco Preset Klassy Traditional]
 ActiveTitleBarOpacity=100
 AdjustBackgroundColorOnPoorContrastActive=true
 AdjustBackgroundColorOnPoorContrastInactive=true
@@ -20,7 +20,7 @@ ButtonIconColorsActive=TitleBarText
 ButtonIconColorsInactive=TitleBarText
 ButtonIconOpacityActive=100
 ButtonIconOpacityInactive=100
-ButtonIconStyle=StyleRedmond
+ButtonIconStyle=StyleTraditional
 ButtonOverrideColorsActiveApplicationMenu=
 ButtonOverrideColorsActiveClose=
 ButtonOverrideColorsActiveContextHelp=
@@ -55,7 +55,7 @@ ColorizeThinWindowOutlineWithButton=true
 CornerRadius=1
 DrawBackgroundGradient=false
 DrawBorderOnMaximizedWindows=false
-DrawTitleBarSeparator=true
+DrawTitleBarSeparator=false
 ForceColorizeSystemIcons=true
 FullHeightButtonSpacingLeft=1
 FullHeightButtonSpacingRight=1
@@ -66,7 +66,7 @@ InactiveTitleBarOpacity=100
 IntegratedRoundedRectangleBottomPadding=1
 KlassyDarkIconThemeInherits=breeze-dark
 KlassyIconThemeInherits=breeze
-KwinBorderSize=Normal
+KwinBorderSize=None
 LockButtonBehaviourActiveInactive=true
 LockButtonColorsActiveInactive=true
 LockButtonSpacingLeftRight=false
@@ -75,7 +75,7 @@ LockCloseButtonBehaviourInactive=true
 LockFullHeightButtonSpacingLeftRight=true
 LockFullHeightButtonWidthMargins=false
 LockThinWindowOutlineCustomColorActiveInactive=true
-LockThinWindowOutlineStyleActiveInactive=true
+LockThinWindowOutlineStyleActiveInactive=false
 LockTitleBarLeftRightMargins=true
 LockTitleBarTopBottomMargins=true
 NegativeCloseBackgroundHoverPressActive=false
@@ -134,8 +134,8 @@ ShowOutlineOnPressInactive=true
 SystemIconSize=SystemIcon16
 ThinWindowOutlineCustomColorActive=0,0,0
 ThinWindowOutlineCustomColorInactive=0,0,0
-ThinWindowOutlineStyleActive=WindowOutlineShadowColor
-ThinWindowOutlineStyleInactive=WindowOutlineShadowColor
+ThinWindowOutlineStyleActive=WindowOutlineAccentColor
+ThinWindowOutlineStyleInactive=WindowOutlineAccentWithContrast
 ThinWindowOutlineThickness=1.75
 TitleAlignment=AlignCenterFullWidth
 TitleBarBottomMargin=1.7

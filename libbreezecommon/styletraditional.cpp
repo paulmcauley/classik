@@ -4,27 +4,27 @@
  * SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
  */
 
-#include "styleredmond.h"
+#include "styletraditional.h"
 
 namespace Breeze
 {
 
-void RenderStyleRedmond18By18::renderCloseIcon()
+void RenderStyleTraditional18By18::renderCloseIcon()
 {
     renderCloseIconAtSquareMaximizeSize();
 }
 
-void RenderStyleRedmond18By18::renderMaximizeIcon()
+void RenderStyleTraditional18By18::renderMaximizeIcon()
 {
     renderSquareMaximizeIcon(false);
 }
 
-void RenderStyleRedmond18By18::renderRestoreIcon()
+void RenderStyleTraditional18By18::renderRestoreIcon()
 {
     renderOverlappingWindowsIcon();
 }
 
-void RenderStyleRedmond18By18::renderMinimizeIcon()
+void RenderStyleTraditional18By18::renderMinimizeIcon()
 {
     // first determine the size of the maximize icon so the minimize icon can align with it
     auto [maximizeRect, maximizePenWidth] = renderSquareMaximizeIcon(true);
@@ -76,17 +76,17 @@ void RenderStyleRedmond18By18::renderMinimizeIcon()
 }
 
 // For consistency with breeze icon set
-void RenderStyleRedmond18By18::renderKeepBehindIcon()
+void RenderStyleTraditional18By18::renderKeepBehindIcon()
 {
     renderKeepBehindIconAsFromBreezeIcons();
 }
 
-void RenderStyleRedmond18By18::renderKeepInFrontIcon()
+void RenderStyleTraditional18By18::renderKeepInFrontIcon()
 {
     renderKeepInFrontIconAsFromBreezeIcons();
 }
 
-void RenderStyleRedmond18By18::renderContextHelpIcon()
+void RenderStyleTraditional18By18::renderContextHelpIcon()
 {
     renderRounderAndBolderContextHelpIcon();
 }

@@ -1,5 +1,5 @@
-#ifndef BREEZE_STYLEREDMOND_H
-#define BREEZE_STYLEREDMOND_H
+#ifndef BREEZE_STYLETRADITIONAL_H
+#define BREEZE_STYLETRADITIONAL_H
 
 /*
  * SPDX-FileCopyrightText: 2021 Paul A McAuley <kde@paulmcauley.com>
@@ -14,7 +14,7 @@
 namespace Breeze
 {
 
-class RenderStyleRedmond18By18 : public RenderDecorationButtonIcon18By18
+class RenderStyleTraditional18By18 : public RenderDecorationButtonIcon18By18
 {
 public:
     /**
@@ -24,12 +24,12 @@ public:
      * @param fromKstyle Indicates that button is not to be drawn in the title bar, but somewhere else in the UI -- ususally means will be smaller
      * @param boldButtonIcons When in titlebar this will draw bolder button icons if true
      */
-    RenderStyleRedmond18By18(QPainter *painter,
-                             const bool fromKstyle,
-                             const bool boldButtonIcons,
-                             const qreal devicePixelRatio,
-                             const QPointF &deviceOffsetTitleBarTopLeftToIconTopLeft,
-                             const bool forceEvenSquares)
+    RenderStyleTraditional18By18(QPainter *painter,
+                                 const bool fromKstyle,
+                                 const bool boldButtonIcons,
+                                 const qreal devicePixelRatio,
+                                 const QPointF &deviceOffsetTitleBarTopLeftToIconTopLeft,
+                                 const bool forceEvenSquares)
         : RenderDecorationButtonIcon18By18(painter,
                                            fromKstyle,
                                            boldButtonIcons,
@@ -46,7 +46,6 @@ public:
     void renderContextHelpIcon() override;
 
 private:
-
 };
 
 }

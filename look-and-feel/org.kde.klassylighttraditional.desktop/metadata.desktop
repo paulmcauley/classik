@@ -1,12 +1,12 @@
 [Desktop Entry]
-Comment=Light theme with panel at the bottom
-Name=Klassy Light - Bottom Panel
+Comment=Light theme with traditional panel at the bottom and labelled tasks
+Name=Klassy Light - Traditional
 X-KDE-PluginInfo-Author=Paul A McAuley
 X-KDE-PluginInfo-Category=Plasma Look And Feel
 X-KDE-PluginInfo-Email=kde@paulmcauley.com
 X-KDE-PluginInfo-EnabledByDefault=true
 X-KDE-PluginInfo-License=LGPL 2.1+
-X-KDE-PluginInfo-Name=org.kde.klassylightbottompanel.desktop
+X-KDE-PluginInfo-Name=org.kde.klassylighttraditional.desktop
 X-KDE-PluginInfo-Version=5
 X-KDE-PluginInfo-Website=https://github.com/paulmcauley/klassy
 X-KDE-ServiceTypes=Plasma/LookAndFeel

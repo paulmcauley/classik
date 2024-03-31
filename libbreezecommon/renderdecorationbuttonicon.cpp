@@ -8,9 +8,9 @@
 #include "stylekite.h"
 #include "styleklassy.h"
 #include "styleoxygen.h"
-#include "styleredmond.h"
 #include "styleredmond10.h"
 #include "styleredmond11.h"
+#include "styletraditional.h"
 #include "systemicontheme.h"
 #include <algorithm>
 #include <cmath>
@@ -42,10 +42,14 @@ std::pair<std::unique_ptr<RenderDecorationButtonIcon>, int> RenderDecorationButt
         return {
             std::make_unique<RenderStyleOxygen18By18>(painter, fromKstyle, boldButtonIcons, devicePixelRatio, deviceOffsetFromZeroReference, forceEvenSquares),
             18};
-    case InternalSettings::EnumButtonIconStyle::StyleRedmond:
-        return {
-            std::make_unique<RenderStyleRedmond18By18>(painter, fromKstyle, boldButtonIcons, devicePixelRatio, deviceOffsetFromZeroReference, forceEvenSquares),
-            18};
+    case InternalSettings::EnumButtonIconStyle::StyleTraditional:
+        return {std::make_unique<RenderStyleTraditional18By18>(painter,
+                                                               fromKstyle,
+                                                               boldButtonIcons,
+                                                               devicePixelRatio,
+                                                               deviceOffsetFromZeroReference,
+                                                               forceEvenSquares),
+                18};
     case InternalSettings::EnumButtonIconStyle::StyleRedmond10:
         return {std::make_unique<RenderStyleRedmond1018By18>(painter,
                                                              fromKstyle,

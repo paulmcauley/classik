@@ -729,9 +729,9 @@ void Decoration::setGlobalLookAndFeelOptions(QString lookAndFeelPackageName)
             {QStringLiteral("org.kde.klassydarkleftpanel.desktop"), QStringLiteral("Klassy")},
             {QStringLiteral("org.kde.klassylightleftpanel.desktop"), QStringLiteral("Klassy")},
             {QStringLiteral("org.kde.klassytwilightleftpanel.desktop"), QStringLiteral("Klassy Twilight")},
-            {QStringLiteral("org.kde.klassydarkbottompanel.desktop"), QStringLiteral("Klassy - bottom panel")},
-            {QStringLiteral("org.kde.klassylightbottompanel.desktop"), QStringLiteral("Klassy - bottom panel")},
-            {QStringLiteral("org.kde.klassytwilightbottompanel.desktop"), QStringLiteral("Klassy Twilight - bottom panel")},
+            {QStringLiteral("org.kde.klassydarktraditional.desktop"), QStringLiteral("Klassy Traditional")},
+            {QStringLiteral("org.kde.klassylighttraditional.desktop"), QStringLiteral("Klassy Traditional")},
+            {QStringLiteral("org.kde.klassytwilighttraditional.desktop"), QStringLiteral("Klassy Twilight Traditional")},
         };
 
         auto presetNameIt = lfPackagePresetNames.find(lookAndFeelPackageName);

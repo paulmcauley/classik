@@ -1,12 +1,12 @@
 [Desktop Entry]
-Comment=Dark theme with panel at the bottom
-Name=Klassy Dark - Bottom Panel
+Comment=Twilight theme with traditional panel at the bottom and labelled tasks
+Name=Klassy Twilight - Traditional
 X-KDE-PluginInfo-Author=Paul A McAuley
 X-KDE-PluginInfo-Category=Plasma Look And Feel
 X-KDE-PluginInfo-Email=kde@paulmcauley.com
 X-KDE-PluginInfo-EnabledByDefault=true
 X-KDE-PluginInfo-License=LGPL 2.1+
-X-KDE-PluginInfo-Name=org.kde.klassydarkbottompanel.desktop
+X-KDE-PluginInfo-Name=org.kde.klassytwilighttraditional.desktop
 X-KDE-PluginInfo-Version=5
 X-KDE-PluginInfo-Website=https://github.com/paulmcauley/klassy
 X-KDE-ServiceTypes=Plasma/LookAndFeel
