@@ -1155,6 +1155,26 @@ void Helper::renderDialGroove(QPainter *painter, const QRect &rect, const QColor
 }
 
 //______________________________________________________________________________
+// modified from https://github.com/qt/qtbase/blob/dev/src/widgets/widgets/qscrollbar.cpp for Klassy
+void Helper::initScrollBarStyleOption(const QScrollBar *scrollBar, QStyleOptionSlider *option) const
+{
+    option->initFrom(scrollBar);
+    option->subControls = QStyle::SC_None;
+    option->activeSubControls = QStyle::SC_None;
+    option->orientation = scrollBar->orientation();
+    option->minimum = scrollBar->minimum();
+    option->maximum = scrollBar->maximum();
+    option->sliderPosition = scrollBar->sliderPosition();
+    option->sliderValue = scrollBar->value();
+    option->singleStep = scrollBar->singleStep();
+    option->pageStep = scrollBar->pageStep();
+    option->upsideDown = scrollBar->invertedAppearance();
+    if (scrollBar->orientation() == Qt::Horizontal) {
+        option->state |= QStyle::State_Horizontal;
+    }
+}
+
+//______________________________________________________________________________
 void Helper::renderSliderHandle(QPainter *painter, const QRect &rect, const QColor &color, const QColor &outline, const QColor &shadow, bool sunken) const
 {
     // setup painter

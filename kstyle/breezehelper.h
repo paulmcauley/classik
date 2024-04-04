@@ -21,6 +21,8 @@
 
 #include <QIcon>
 #include <QPainterPath>
+#include <QScrollBar>
+#include <QStyleOption>
 #include <QToolBar>
 #include <QWidget>
 
@@ -270,6 +272,7 @@ public:
 
     //* slider groove
     void renderSliderGroove(QPainter *, const QRect &, const QColor &) const;
+    void initScrollBarStyleOption(const QScrollBar *scrollBar, QStyleOptionSlider *option) const;
 
     //* slider handle
     void renderSliderHandle(QPainter *, const QRect &, const QColor &, const QColor &outline, const QColor &shadow, bool sunken) const;

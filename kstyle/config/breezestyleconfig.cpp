@@ -262,10 +262,10 @@ void StyleConfig::kPageWidgetChanged(KPageWidgetItem *current, KPageWidgetItem *
     }
 }
 
-// only enable _autoHideArrows when one arrow button type is not "No Buttons"
+// only enable _autoHideArrows when one arrow button type is "One Button" for both top and bottom
 void StyleConfig::setEnabledAutoHideArrows()
 {
-    _autoHideArrows->setEnabled((_scrollBarSubLineButtons->currentIndex() != 0) || (_scrollBarAddLineButtons->currentIndex() != 0));
+    _autoHideArrows->setVisible((_scrollBarSubLineButtons->currentIndex() == 1) && (_scrollBarAddLineButtons->currentIndex() == 1));
 }
 
 }

@@ -45,6 +45,7 @@
 #include <QMdiArea>
 #include <QMenu>
 #include <QMetaEnum>
+#include <QMouseEvent>
 #include <QPainter>
 #include <QPushButton>
 #include <QRadioButton>
@@ -346,6 +347,7 @@ void Style::polish(QWidget *widget)
     if (qobject_cast<QScrollBar *>(widget)) {
         // remove opaque painting for scrollbars
         widget->setAttribute(Qt::WA_OpaquePaintEvent, false);
+        addEventFilter(widget);
 
     } else if (widget->inherits("KTextEditor::View")) {
         addEventFilter(widget);
@@ -1426,6 +1428,8 @@ bool Style::eventFilter(QObject *object, QEvent *event)
         return eventFilterMdiSubWindow(subWindow, event);
     } else if (auto commandLinkButton = qobject_cast<QCommandLinkButton *>(object)) {
         return eventFilterCommandLinkButton(commandLinkButton, event);
+    } else if (auto scrollBar = qobject_cast<QScrollBar *>(object)) {
+        return eventFilterScrollBar(scrollBar, event);
     }
 #if QT_VERSION < 0x050D00 // Check if Qt version < 5.13
     else if (object == qApp && event->type() == QEvent::ApplicationPaletteChange) {
@@ -1755,6 +1759,114 @@ bool Style::eventFilterCommandLinkButton(QCommandLinkButton *button, QEvent *eve
 
     // continue with normal painting
     return false;
+}
+
+bool Style::eventFilterScrollBar(QScrollBar *scrollBar, QEvent *event)
+{
+    if (shouldAutoHideArrows(scrollBar)) {
+        if (event->type() == QEvent::MouseButtonPress) {
+            QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+
+            QStyleOptionSlider opt;
+            _helper->initScrollBarStyleOption(scrollBar, &opt);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            QPoint click = mouseEvent->position().toPoint();
+#else
+            QPoint click = mouseEvent->pos();
+#endif
+            if (hitTestComplexControl(CC_ScrollBar, &opt, click, scrollBar) == SC_ScrollBarSlider) {
+                bool horizontal = scrollBar->orientation() == Qt::Orientation::Horizontal;
+                QRect sr = subControlRect(QStyle::CC_ScrollBar, &opt, QStyle::SC_ScrollBarSlider, scrollBar);
+                int clickOffset = horizontal ? (click.x() - sr.x()) : (click.y() - sr.y());
+
+                // adjust the clickOffset so that dragging over the space where the arrow resides initially results in instantaneous scrolling
+                if (opt.sliderPosition <= opt.minimum && opt.sliderPosition != opt.maximum) {
+                    QRect grShownArrows = scrollBarSubControlRect(&opt,
+                                                                  QStyle::SC_ScrollBarGroove,
+                                                                  scrollBar,
+                                                                  OverrideAutoHideArrows::ShowArrow,
+                                                                  OverrideAutoHideArrows::ShowArrow);
+                    QRect grHiddenSubLine = scrollBarSubControlRect(&opt,
+                                                                    QStyle::SC_ScrollBarGroove,
+                                                                    scrollBar,
+                                                                    OverrideAutoHideArrows::HideArrow,
+                                                                    OverrideAutoHideArrows::ShowArrow);
+                    if (horizontal) {
+                        clickOffset -= (grShownArrows.left() - grHiddenSubLine.left());
+                    } else {
+                        clickOffset -= (grShownArrows.top() - grHiddenSubLine.top());
+                    }
+                } else if (opt.sliderPosition >= opt.maximum && opt.sliderPosition != opt.minimum) {
+                    QRect grShownArrows = scrollBarSubControlRect(&opt,
+                                                                  QStyle::SC_ScrollBarGroove,
+                                                                  scrollBar,
+                                                                  OverrideAutoHideArrows::ShowArrow,
+                                                                  OverrideAutoHideArrows::ShowArrow);
+                    QRect grHiddenAddLine = scrollBarSubControlRect(&opt,
+                                                                    QStyle::SC_ScrollBarGroove,
+                                                                    scrollBar,
+                                                                    OverrideAutoHideArrows::ShowArrow,
+                                                                    OverrideAutoHideArrows::HideArrow);
+                    if (horizontal) {
+                        clickOffset -= (grShownArrows.right() - grHiddenAddLine.right());
+                    } else {
+                        clickOffset -= (grShownArrows.bottom() - grHiddenAddLine.bottom());
+                    }
+                }
+
+                scrollBar->setProperty("_klassySliderClickOffset", clickOffset);
+            }
+        }
+
+        else if (event->type() == QEvent::MouseMove && scrollBar->isSliderDown()) {
+            QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            QPoint click = mouseEvent->position().toPoint();
+#else
+            QPoint click = mouseEvent->pos();
+#endif
+            // modified from https://github.com/qt/qtbase/blob/dev/src/widgets/widgets/qscrollbar.cpp for Klassy
+            int newSliderPosition = scrollBarPixelPosToRangeValue(scrollBar,
+                                                                  (scrollBar->orientation() == Qt::Orientation::Horizontal ? click.x() : click.y())
+                                                                      - scrollBar->property("_klassySliderClickOffset").toInt());
+            scrollBar->setSliderPosition(newSliderPosition);
+            event->setAccepted(true);
+            return true;
+
+        } else if (event->type() == QEvent::MouseButtonRelease) {
+            scrollBar->setProperty("_klassySliderClickOffset", QVariant());
+        }
+    }
+    return false;
+}
+
+// modified from https://github.com/qt/qtbase/blob/dev/src/widgets/widgets/qscrollbar.cpp for Klassy
+int Style::scrollBarPixelPosToRangeValue(QScrollBar *scrollBar, int pos) const
+{
+    QStyleOptionSlider opt;
+    _helper->initScrollBarStyleOption(scrollBar, &opt);
+
+    QRect srShownArrows =
+        scrollBarSubControlRect(&opt, QStyle::SC_ScrollBarSlider, scrollBar, OverrideAutoHideArrows::ShowArrow, OverrideAutoHideArrows::ShowArrow);
+    QRect grShownArrows =
+        scrollBarSubControlRect(&opt, QStyle::SC_ScrollBarGroove, scrollBar, OverrideAutoHideArrows::ShowArrow, OverrideAutoHideArrows::ShowArrow);
+
+    int sliderMin, sliderMax, sliderLength;
+
+    if (opt.orientation == Qt::Horizontal) {
+        sliderLength = srShownArrows.width();
+        sliderMin = grShownArrows.x();
+        sliderMax = grShownArrows.right() - sliderLength + 1;
+        if (scrollBar->layoutDirection() == Qt::RightToLeft)
+            opt.upsideDown = !opt.upsideDown;
+    } else {
+        sliderLength = srShownArrows.height();
+        sliderMin = grShownArrows.y();
+        sliderMax = grShownArrows.bottom() - sliderLength + 1;
+    }
+
+    return QStyle::sliderValueFromPosition(opt.minimum, opt.maximum, pos - sliderMin, sliderMax - sliderMin, opt.upsideDown);
 }
 
 //_____________________________________________________________________
@@ -2806,7 +2918,11 @@ QRect Style::scrollBarInternalSubControlRect(const QStyleOptionComplex *option, 
 }
 
 //___________________________________________________________________________________________________________________
-QRect Style::scrollBarSubControlRect(const QStyleOptionComplex *option, SubControl subControl, const QWidget *widget) const
+QRect Style::scrollBarSubControlRect(const QStyleOptionComplex *option,
+                                     SubControl subControl,
+                                     const QWidget *widget,
+                                     OverrideAutoHideArrows overrideHideSubLine,
+                                     OverrideAutoHideArrows overrideHideAddLine) const
 {
     // cast option and check
     const auto sliderOption(qstyleoption_cast<const QStyleOptionSlider *>(option));
@@ -2814,14 +2930,9 @@ QRect Style::scrollBarSubControlRect(const QStyleOptionComplex *option, SubContr
         return ParentStyleClass::subControlRect(CC_ScrollBar, option, subControl, widget);
     }
 
-    // bools marking the extremities of slider position
-    bool sliderAtMin = (sliderOption->sliderPosition == sliderOption->minimum);
-    bool sliderAtMax = (sliderOption->sliderPosition == sliderOption->maximum);
-
     // get relevant state
     const State &state(option->state);
     const bool horizontal(state & State_Horizontal);
-    const bool mouseOver(state & State_MouseOver);
     const bool autoHideArrows(shouldAutoHideArrows(widget));
 
     switch (subControl) {
@@ -2830,75 +2941,62 @@ QRect Style::scrollBarSubControlRect(const QStyleOptionComplex *option, SubContr
         return scrollBarInternalSubControlRect(option, subControl);
 
     case SC_ScrollBarGroove: {
-        auto topRect = visualRect(option, scrollBarInternalSubControlRect(option, SC_ScrollBarSubLine));
-        auto bottomRect = visualRect(option, scrollBarInternalSubControlRect(option, SC_ScrollBarAddLine));
+        // bools marking whether to auto-hide the arrows
+        bool enlargeOverSubLine = (sliderOption->minimum == sliderOption->maximum) || overrideHideSubLine == OverrideAutoHideArrows::HideArrow
+            || (autoHideArrows && overrideHideSubLine != OverrideAutoHideArrows::ShowArrow && (sliderOption->sliderPosition <= (sliderOption->minimum)));
+        bool enlargeOverAddLine = (sliderOption->minimum == sliderOption->maximum) || overrideHideAddLine == OverrideAutoHideArrows::HideArrow
+            || (autoHideArrows && overrideHideAddLine != OverrideAutoHideArrows::ShowArrow && (sliderOption->sliderPosition >= (sliderOption->maximum)));
 
         QPoint topLeftCorner;
         QPoint botRightCorner;
 
-        bool enlargeOverSubPage = false;
-        bool enlargeOverAddPage = false;
-        if (autoHideArrows && (sliderOption->minimum == sliderOption->maximum)) {
-            enlargeOverSubPage = true;
-            enlargeOverAddPage = true;
-        }
+        QRect subLineRect = visualRect(option, scrollBarInternalSubControlRect(option, SC_ScrollBarSubLine));
+        QRect addLineRect = visualRect(option, scrollBarInternalSubControlRect(option, SC_ScrollBarAddLine));
 
         if (horizontal) {
             if (_subLineButtons == ScrollBarButtonType::NoButton) {
-                topLeftCorner = QPoint(topRect.left() + Metrics::ScrollBar_TopBottomMargins, topRect.top());
+                topLeftCorner = QPoint(subLineRect.left() + Metrics::ScrollBar_TopBottomMargins, subLineRect.top());
             } else if (_subLineButtons == ScrollBarButtonType::SingleButton) {
-                if (enlargeOverSubPage)
-                    topLeftCorner = QPoint(topRect.left() + Metrics::ScrollBar_TopBottomMargins, topRect.top());
+                if (enlargeOverSubLine)
+                    topLeftCorner = QPoint(subLineRect.left() + Metrics::ScrollBar_TopBottomMargins, subLineRect.top());
                 else
-                    topLeftCorner = QPoint(topRect.right() + 1 + StyleConfigData::scrollBarTopOneButtonSpacing(), topRect.top());
+                    topLeftCorner = QPoint(subLineRect.right() + 1 + StyleConfigData::scrollBarTopOneButtonSpacing(), subLineRect.top());
             } else if (_subLineButtons == ScrollBarButtonType::DoubleButton) {
-                if (enlargeOverSubPage)
-                    topLeftCorner = QPoint(topRect.left() + Metrics::ScrollBar_TopBottomMargins, topRect.top());
-                else
-                    topLeftCorner = QPoint(topRect.right() + 1 + StyleConfigData::scrollBarTopTwoButtonSpacing(), topRect.top());
+                topLeftCorner = QPoint(subLineRect.right() + 1 + StyleConfigData::scrollBarTopTwoButtonSpacing(), subLineRect.top());
             }
 
             if (_addLineButtons == ScrollBarButtonType::NoButton) {
-                botRightCorner = QPoint(bottomRect.right() + 1 - Metrics::ScrollBar_TopBottomMargins, topRect.bottom() + 1);
+                botRightCorner = QPoint(addLineRect.right() + 1 - Metrics::ScrollBar_TopBottomMargins, subLineRect.bottom() + 1);
             } else if (_addLineButtons == ScrollBarButtonType::SingleButton) {
-                if (enlargeOverAddPage)
-                    botRightCorner = QPoint(bottomRect.right() + 1 - Metrics::ScrollBar_TopBottomMargins, topRect.bottom() + 1);
+                if (enlargeOverAddLine)
+                    botRightCorner = QPoint(addLineRect.right() + 1 - Metrics::ScrollBar_TopBottomMargins, subLineRect.bottom() + 1);
                 else
-                    botRightCorner = QPoint(bottomRect.left() - StyleConfigData::scrollBarBottomOneButtonSpacing(), topRect.bottom() + 1);
+                    botRightCorner = QPoint(addLineRect.left() - StyleConfigData::scrollBarBottomOneButtonSpacing(), subLineRect.bottom() + 1);
             } else if (_addLineButtons == ScrollBarButtonType::DoubleButton) {
-                if (enlargeOverAddPage)
-                    botRightCorner = QPoint(bottomRect.right() + 1 - Metrics::ScrollBar_TopBottomMargins, topRect.bottom() + 1);
-                else
-                    botRightCorner = QPoint(bottomRect.left() - StyleConfigData::scrollBarBottomTwoButtonSpacing(), topRect.bottom() + 1);
+                botRightCorner = QPoint(addLineRect.left() - StyleConfigData::scrollBarBottomTwoButtonSpacing(), subLineRect.bottom() + 1);
             }
 
         } else {
             if (_subLineButtons == ScrollBarButtonType::NoButton) {
-                topLeftCorner = QPoint(topRect.left(), topRect.top() + Metrics::ScrollBar_TopBottomMargins);
+                topLeftCorner = QPoint(subLineRect.left(), subLineRect.top() + Metrics::ScrollBar_TopBottomMargins);
             } else if (_subLineButtons == ScrollBarButtonType::SingleButton) {
-                if (enlargeOverSubPage)
-                    topLeftCorner = QPoint(topRect.left(), topRect.top() + Metrics::ScrollBar_TopBottomMargins);
+                if (enlargeOverSubLine)
+                    topLeftCorner = QPoint(subLineRect.left(), subLineRect.top() + Metrics::ScrollBar_TopBottomMargins);
                 else
-                    topLeftCorner = QPoint(topRect.left(), topRect.bottom() + 1 + StyleConfigData::scrollBarTopOneButtonSpacing());
+                    topLeftCorner = QPoint(subLineRect.left(), subLineRect.bottom() + 1 + StyleConfigData::scrollBarTopOneButtonSpacing());
             } else if (_subLineButtons == ScrollBarButtonType::DoubleButton) {
-                if (enlargeOverSubPage)
-                    topLeftCorner = QPoint(topRect.left(), topRect.top() + Metrics::ScrollBar_TopBottomMargins);
-                else
-                    topLeftCorner = QPoint(topRect.left(), topRect.bottom() + 1 + StyleConfigData::scrollBarTopTwoButtonSpacing());
+                topLeftCorner = QPoint(subLineRect.left(), subLineRect.bottom() + 1 + StyleConfigData::scrollBarTopTwoButtonSpacing());
             }
 
             if (_addLineButtons == ScrollBarButtonType::NoButton) {
-                botRightCorner = QPoint(topRect.right() + 1, bottomRect.bottom() + 1 - Metrics::ScrollBar_TopBottomMargins);
+                botRightCorner = QPoint(subLineRect.right() + 1, addLineRect.bottom() + 1 - Metrics::ScrollBar_TopBottomMargins);
             } else if (_addLineButtons == ScrollBarButtonType::SingleButton) {
-                if (enlargeOverAddPage)
-                    botRightCorner = QPoint(topRect.right() + 1, bottomRect.bottom() + 1 - Metrics::ScrollBar_TopBottomMargins);
+                if (enlargeOverAddLine)
+                    botRightCorner = QPoint(subLineRect.right() + 1, addLineRect.bottom() + 1 - Metrics::ScrollBar_TopBottomMargins);
                 else
-                    botRightCorner = QPoint(topRect.right() + 1, bottomRect.top() - StyleConfigData::scrollBarBottomOneButtonSpacing());
+                    botRightCorner = QPoint(subLineRect.right() + 1, addLineRect.top() - StyleConfigData::scrollBarBottomOneButtonSpacing());
             } else if (_addLineButtons == ScrollBarButtonType::DoubleButton) {
-                if (enlargeOverAddPage)
-                    botRightCorner = QPoint(topRect.right() + 1, bottomRect.bottom() + 1 - Metrics::ScrollBar_TopBottomMargins);
-                else
-                    botRightCorner = QPoint(topRect.right() + 1, bottomRect.top() - StyleConfigData::scrollBarBottomTwoButtonSpacing());
+                botRightCorner = QPoint(subLineRect.right() + 1, addLineRect.top() - StyleConfigData::scrollBarBottomTwoButtonSpacing());
             }
         }
 
@@ -2910,9 +3008,7 @@ QRect Style::scrollBarSubControlRect(const QStyleOptionComplex *option, SubContr
 
     case SC_ScrollBarSlider: {
         // handle RTL here to unreflect things if need be
-        auto groove = visualRect(option, subControlRect(CC_ScrollBar, option, SC_ScrollBarGroove, widget));
-        auto topRect = visualRect(option, scrollBarInternalSubControlRect(option, SC_ScrollBarSubLine));
-        auto bottomRect = visualRect(option, scrollBarInternalSubControlRect(option, SC_ScrollBarAddLine));
+        auto groove = visualRect(option, scrollBarSubControlRect(option, SC_ScrollBarGroove, widget, overrideHideSubLine, overrideHideAddLine));
 
         if (sliderOption->minimum == sliderOption->maximum) {
             return groove;
@@ -2931,55 +3027,16 @@ QRect Style::scrollBarSubControlRect(const QStyleOptionComplex *option, SubContr
             return groove;
         }
 
-        // determines whether to enlarge the slider over the area occupied by the arrows when slider is at extremities and mouse is not over
-        bool enlargeOverSubPage = false;
-        bool enlargeOverAddPage = false;
-        if (_subLineButtons != ScrollBarButtonType::NoButton && sliderAtMin && !mouseOver && autoHideArrows)
-            enlargeOverSubPage = true;
-        if (_addLineButtons != ScrollBarButtonType::NoButton && sliderAtMax && !mouseOver && autoHideArrows)
-            enlargeOverAddPage = true;
-
         int pos = qRound(qreal(sliderOption->sliderPosition - sliderOption->minimum) / (sliderOption->maximum - sliderOption->minimum) * space);
         if (sliderOption->upsideDown)
             pos = space - pos;
 
         // return the slider rect, accounting for any enlargement of slider at extremities
         if (horizontal) {
-            if (enlargeOverSubPage) {
-                int enlargeToTopRectXPos = topRect.left();
-                if (_subLineButtons == ScrollBarButtonType::SingleButton)
-                    enlargeToTopRectXPos = topRect.left() + Metrics::ScrollBar_TopBottomMargins;
-                else if (_subLineButtons == ScrollBarButtonType::DoubleButton)
-                    enlargeToTopRectXPos = topRect.left() + Metrics::ScrollBar_TopBottomMargins;
-                return visualRect(option,
-                                  QRect(enlargeToTopRectXPos + pos, groove.top(), sliderSize + (groove.left() - enlargeToTopRectXPos), groove.height()));
-            } else if (enlargeOverAddPage) {
-                int enlargeToBottomRectXBy = 0;
-                if (_addLineButtons == ScrollBarButtonType::SingleButton)
-                    enlargeToBottomRectXBy = bottomRect.right() - groove.right() - Metrics::ScrollBar_TopBottomMargins;
-                else if (_addLineButtons == ScrollBarButtonType::DoubleButton)
-                    enlargeToBottomRectXBy = bottomRect.right() - groove.right() - Metrics::ScrollBar_TopBottomMargins;
-                return visualRect(option, QRect(groove.left() + pos, groove.top(), sliderSize + enlargeToBottomRectXBy, groove.height()));
-            } else
-                return visualRect(option, QRect(groove.left() + pos, groove.top(), sliderSize, groove.height()));
+            return visualRect(option, QRect(groove.left() + pos, groove.top(), sliderSize, groove.height()));
 
         } else {
-            if (enlargeOverSubPage) {
-                int enlargeToTopRectYPos = topRect.top();
-                if (_subLineButtons == ScrollBarButtonType::SingleButton)
-                    enlargeToTopRectYPos = topRect.top() + Metrics::ScrollBar_TopBottomMargins;
-                else if (_subLineButtons == ScrollBarButtonType::DoubleButton)
-                    enlargeToTopRectYPos = topRect.top() + Metrics::ScrollBar_TopBottomMargins;
-                return visualRect(option, QRect(groove.left(), enlargeToTopRectYPos + pos, groove.width(), sliderSize + (groove.top() - enlargeToTopRectYPos)));
-            } else if (enlargeOverAddPage) {
-                int enlargeToBottomRectYBy = 0;
-                if (_addLineButtons == ScrollBarButtonType::SingleButton)
-                    enlargeToBottomRectYBy = bottomRect.bottom() - groove.bottom() - Metrics::ScrollBar_TopBottomMargins;
-                else if (_addLineButtons == ScrollBarButtonType::DoubleButton)
-                    enlargeToBottomRectYBy = bottomRect.bottom() - groove.bottom() - Metrics::ScrollBar_TopBottomMargins;
-                return visualRect(option, QRect(groove.left(), groove.top() + pos, groove.width(), sliderSize + enlargeToBottomRectYBy));
-            } else
-                return visualRect(option, QRect(groove.left(), groove.top() + pos, groove.width(), sliderSize));
+            return visualRect(option, QRect(groove.left(), groove.top() + pos, groove.width(), sliderSize));
         }
     }
 
@@ -3019,7 +3076,7 @@ bool Style::scrollBarAutoHideArrowsException(const QWidget *widget) const
     bool exception = false;
 
     if (widget) {
-        QVector<const char *> exceptionClassNames = {"KateScrollBar"};
+        QList<const char *> exceptionClassNames = {"KateScrollBar"};
         for (int i = 0; i < exceptionClassNames.size(); i++) {
             if (widget->inherits(exceptionClassNames[i])) {
                 exception = true;
@@ -3033,7 +3090,8 @@ bool Style::scrollBarAutoHideArrowsException(const QWidget *widget) const
 
 bool Style::shouldAutoHideArrows(const QWidget *widget) const
 {
-    if (StyleConfigData::animationsEnabled() && StyleConfigData::scrollBarAutoHideArrows() && !scrollBarAutoHideArrowsException(widget))
+    if (StyleConfigData::animationsEnabled() && StyleConfigData::scrollBarAutoHideArrows() && _subLineButtons == ScrollBarButtonType::SingleButton
+        && _addLineButtons == ScrollBarButtonType::SingleButton && !scrollBarAutoHideArrowsException(widget))
         return true;
     else
         return false;
@@ -5860,7 +5918,7 @@ bool Style::drawScrollBarAddLineControl(const QStyleOption *option, QPainter *pa
         return true;
     }
 
-    if (shouldAutoHideArrows(widget) && (sliderOption->minimum == sliderOption->maximum))
+    if ((sliderOption->minimum == sliderOption->maximum) || (shouldAutoHideArrows(widget) && (sliderOption->sliderPosition >= (sliderOption->maximum))))
         return true;
 
     const State &state(option->state);
@@ -5939,7 +5997,7 @@ bool Style::drawScrollBarSubLineControl(const QStyleOption *option, QPainter *pa
         return true;
     }
 
-    if (shouldAutoHideArrows(widget) && (sliderOption->minimum == sliderOption->maximum))
+    if ((sliderOption->minimum == sliderOption->maximum) || (shouldAutoHideArrows(widget) && (sliderOption->sliderPosition <= (sliderOption->minimum))))
         return true;
 
     const State &state(option->state);
