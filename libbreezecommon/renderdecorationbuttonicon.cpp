@@ -314,9 +314,9 @@ qreal RenderDecorationButtonIcon::penWidthToDevice(const QPen &pen)
 
 qreal RenderDecorationButtonIcon::straightLineOpacity()
 {
-    if (m_devicePixelRatio < 1.2)
+    if (!m_boldButtonIcons)
         return 0.9;
     else
-        return 1;
+        return 0.95;
 }
 }

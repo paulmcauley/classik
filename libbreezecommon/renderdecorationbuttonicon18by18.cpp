@@ -804,8 +804,8 @@ void RenderDecorationButtonIcon18By18::renderTinySquareMinimizeIcon()
     if (m_boldButtonIcons) {
         QColor penColor = pen.color();
         QColor brushColor = penColor;
-        brushColor.setAlphaF(brushColor.alphaF() * 0.65);
-        penColor.setAlphaF(penColor.alphaF() * 0.85);
+        brushColor.setAlphaF(brushColor.alphaF() * 0.55);
+        penColor.setAlphaF(penColor.alphaF() * straightLineOpacity() * 0.95);
         pen.setColor(penColor);
 
         pen.setJoinStyle(Qt::BevelJoin);
@@ -818,8 +818,8 @@ void RenderDecorationButtonIcon18By18::renderTinySquareMinimizeIcon()
     } else { // in fine mode the dense minimize button appears bolder than the others so reduce its opacity to compensate
         QColor penColor = pen.color();
         QColor brushColor = penColor;
-        brushColor.setAlphaF(brushColor.alphaF() * 0.45);
-        penColor.setAlphaF(penColor.alphaF() * 0.65);
+        brushColor.setAlphaF(brushColor.alphaF() * 0.35);
+        penColor.setAlphaF(penColor.alphaF() * straightLineOpacity() * 0.9);
         pen.setColor(penColor);
 
         pen.setJoinStyle(Qt::BevelJoin);
