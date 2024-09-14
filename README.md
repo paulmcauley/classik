@@ -145,7 +145,7 @@ These icons inherit the _Breeze_ icon theme by default, only overriding the titl
 ## Klassy Settings
 Klassy includes a settings application, `klassy-settings`. This shows Window Decoration and Application Style settings in one place.
 
-`klassy-settings` also has command-line options to allow Preset file imports, load Presets and generate system icons. Run `klassy-setttings --help` for details.
+`klassy-settings` also has command-line options to allow Preset file imports, load Presets and generate system icons. Run `klassy-settings --help` for details.
 
 <a name="donations"/>
 
