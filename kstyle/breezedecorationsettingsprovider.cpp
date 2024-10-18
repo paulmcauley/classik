@@ -9,8 +9,6 @@
 #include "decorationexceptionlist.h"
 #include "presetsmodel.h"
 
-#include <KWindowInfo>
-
 #include <QRegularExpression>
 #include <QTextStream>
 

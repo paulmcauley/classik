@@ -802,7 +802,7 @@ void RenderDecorationButtonIcon18By18::renderTinySquareMinimizeIcon()
     if (m_boldButtonIcons) {
         QColor penColor = pen.color();
         QColor brushColor = penColor;
-        brushColor.setAlphaF(brushColor.alphaF() * 0.55);
+        brushColor.setAlphaF(brushColor.alphaF() * 0.45);
         penColor.setAlphaF(penColor.alphaF() * straightLineOpacity() * 0.95);
         pen.setColor(penColor);
 

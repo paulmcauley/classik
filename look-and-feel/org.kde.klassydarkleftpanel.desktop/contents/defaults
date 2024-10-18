@@ -5,7 +5,7 @@ cursorTheme=breeze_cursors
 ColorScheme=KlassyDark
 
 [kdeglobals][Icons]
-Theme=klassy
+Theme=klassy-dark
 
 [kdeglobals][KDE]
 widgetStyle=Klassy

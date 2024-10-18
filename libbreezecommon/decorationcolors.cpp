@@ -7,7 +7,6 @@
 #include "colortools.h"
 #include <KColorUtils>
 #include <KStatefulBrush>
-#include <QDBusConnection>
 
 namespace Breeze
 {

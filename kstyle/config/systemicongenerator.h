@@ -64,7 +64,7 @@ private:
         {DecorationButtonType::Close, false, QStringLiteral("kontes-close")},
         {DecorationButtonType::Close, false, QStringLiteral("tab-close-other")},
         {DecorationButtonType::Close, false, QStringLiteral("tab-close")},
-        {DecorationButtonType::ContextHelp, false, QStringLiteral("help-contextual-symbolic")},
+        //{DecorationButtonType::ContextHelp, false, QStringLiteral("help-contextual-symbolic")},
         //{DecorationButtonType::ContextHelp, false, QStringLiteral("help-contextual")},
         {DecorationButtonType::Shade, false, QStringLiteral("window-shade-symbolic")},
         {DecorationButtonType::Shade, false, QStringLiteral("window-shade")},
