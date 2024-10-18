@@ -63,7 +63,7 @@ _Klassy_ (formerly _ClassiK_/_ClassikStyles_) is a highly customizable binary Wi
 <a name="installation"/>
 
 ## Installation
-_Klassy_ version 6.2 requires __Plasma 6.1__, or later, so please check you have this in kinfocenter before trying to install. For the master branch you should compile from source.
+_Klassy_ version 6.2 requires __Plasma 6.1__, or later, so please check you have this in kinfocenter before trying to install. You can either download the pre-built packages or compile from source.
 <a name="prebuilt"/>
 
 ### Pre-built packages
