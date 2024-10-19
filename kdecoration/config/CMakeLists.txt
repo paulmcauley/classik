@@ -61,4 +61,4 @@ target_link_libraries(kcm_klassydecoration
 kcmutils_generate_desktop_file(kcm_klassydecoration)
 
 #install bundled presets
-install(DIRECTORY presets  DESTINATION  ${KDE_INSTALL_QTPLUGINDIR}/plasma/kcms/klassy)
+install(DIRECTORY presets  DESTINATION  ${KDE_INSTALL_QTPLUGINDIR}/org.kde.kdecoration2.kcm/klassydecoration)

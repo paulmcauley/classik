@@ -124,7 +124,7 @@ cd klassy
 ```
 
 ```
-git checkout master
+git checkout plasma6.2
 ```
 
 ```

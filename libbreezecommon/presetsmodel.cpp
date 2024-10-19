@@ -346,7 +346,7 @@ bool PresetsModel::isKeyValid(const QString &key)
     return false;
 }
 
-// copies bundled presets in /usr/lib64/qt5/plugins/plasma/kcms/klassy/presets into ~/.config/klassy/klassyrc once per release
+// copies bundled presets in /usr/lib64/qt6/plugins/org.kde.kdecoration2.kcm/klassydecoration/presets into ~/.config/klassy/klassyrc once per release
 void PresetsModel::importBundledPresets(KConfig *presetsConfig)
 {
     // don't copy if BundledWindecoPresetsImportedVersion has been set for the current release version
@@ -359,14 +359,14 @@ void PresetsModel::importBundledPresets(KConfig *presetsConfig)
         }
     }
 
-    // qDebug() << "librarypaths: " << QCoreApplication::libraryPaths(); //librarypaths:  ("/usr/lib64/qt5/plugins", "/usr/bin")
+    // qDebug() << "librarypaths: " << QCoreApplication::libraryPaths(); //librarypaths:  ("/usr/lib64/qt6/plugins", "/usr/bin")
 
     // delete bundled presets from a previous release first
     // if the user modified the preset it will not contain the BundledPreset flag and hence won't be deleted
     PresetsModel::deleteBundledPresets(presetsConfig);
 
     for (QString libraryPath : QCoreApplication::libraryPaths()) {
-        libraryPath += "/plasma/kcms/klassy/presets";
+        libraryPath += "/org.kde.kdecoration2.kcm/klassydecoration/presets";
         QDir presetsDir(libraryPath);
         if (presetsDir.exists()) {
             QStringList filters;
