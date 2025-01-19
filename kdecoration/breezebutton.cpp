@@ -14,8 +14,8 @@
 
 #include <KColorScheme>
 #include <KColorUtils>
-#include <KDecoration2/DecoratedClient>
-#include <KDecoration2/DecorationButtonGroup>
+#include <KDecoration3/DecoratedWindow>
+#include <KDecoration3/DecorationButtonGroup>
 #include <KIconLoader>
 #include <KWindowSystem>
 
@@ -26,17 +26,17 @@
 namespace Breeze
 {
 
-using KDecoration2::ColorGroup;
-using KDecoration2::ColorRole;
+using KDecoration3::ColorGroup;
+using KDecoration3::ColorRole;
 
 //__________________________________________________________________
-Button::Button(KDecoration2::DecorationButtonType type, Decoration *decoration, QObject *parent)
+Button::Button(KDecoration3::DecorationButtonType type, Decoration *decoration, QObject *parent)
     : DecorationButton(type, decoration, parent)
     , m_d(qobject_cast<Decoration *>(decoration))
     , m_animation(new QVariantAnimation(this))
     , m_isGtkCsdButton(false)
 {
-    auto c = decoration->client();
+    auto c = decoration->window();
 
     // setup animation
     // It is important start and end value are of the same type, hence 0.0 and not just 0
@@ -66,16 +66,16 @@ Button::Button(KDecoration2::DecorationButtonType type, Decoration *decoration, 
     // connections
     connect(c, SIGNAL(iconChanged(QIcon)), this, SLOT(update()));
     connect(decoration, &Decoration::reconfigured, this, &Button::reconfigure);
-    connect(this, &KDecoration2::DecorationButton::hoveredChanged, this, &Button::updateAnimationState);
-    connect(this, &KDecoration2::DecorationButton::hoveredChanged, this, &Button::updateThinWindowOutlineWithButtonColor);
-    connect(this, &KDecoration2::DecorationButton::pressedChanged, this, &Button::updateThinWindowOutlineWithButtonColor);
+    connect(this, &KDecoration3::DecorationButton::hoveredChanged, this, &Button::updateAnimationState);
+    connect(this, &KDecoration3::DecorationButton::hoveredChanged, this, &Button::updateThinWindowOutlineWithButtonColor);
+    connect(this, &KDecoration3::DecorationButton::pressedChanged, this, &Button::updateThinWindowOutlineWithButtonColor);
 
     reconfigure();
 }
 
 //__________________________________________________________________
 Button::Button(QObject *parent, const QVariantList &args)
-    : Button(args.at(0).value<KDecoration2::DecorationButtonType>(), args.at(1).value<Decoration *>(), parent)
+    : Button(args.at(0).value<KDecoration3::DecorationButtonType>(), args.at(1).value<Decoration *>(), parent)
 {
     m_standAlone = true;
     //! small button size must return to !valid because it was altered from the default constructor,
@@ -84,40 +84,40 @@ Button::Button(QObject *parent, const QVariantList &args)
 }
 
 //__________________________________________________________________
-Button *Button::create(KDecoration2::DecorationButtonType type, KDecoration2::Decoration *decoration, QObject *parent)
+Button *Button::create(KDecoration3::DecorationButtonType type, KDecoration3::Decoration *decoration, QObject *parent)
 {
     if (auto d = qobject_cast<Decoration *>(decoration)) {
-        auto c = d->client();
+        auto c = d->window();
 
         Button *b = new Button(type, d, parent);
         switch (type) {
-        case KDecoration2::DecorationButtonType::Close:
+        case KDecoration3::DecorationButtonType::Close:
             b->setVisible(c->isCloseable());
-            QObject::connect(c, &KDecoration2::DecoratedClient::closeableChanged, b, &Breeze::Button::setVisible);
+            QObject::connect(c, &KDecoration3::DecoratedWindow::closeableChanged, b, &Breeze::Button::setVisible);
             break;
 
-        case KDecoration2::DecorationButtonType::Maximize:
+        case KDecoration3::DecorationButtonType::Maximize:
             b->setVisible(c->isMaximizeable());
-            QObject::connect(c, &KDecoration2::DecoratedClient::maximizeableChanged, b, &Breeze::Button::setVisible);
+            QObject::connect(c, &KDecoration3::DecoratedWindow::maximizeableChanged, b, &Breeze::Button::setVisible);
             break;
 
-        case KDecoration2::DecorationButtonType::Minimize:
+        case KDecoration3::DecorationButtonType::Minimize:
             b->setVisible(c->isMinimizeable());
-            QObject::connect(c, &KDecoration2::DecoratedClient::minimizeableChanged, b, &Breeze::Button::setVisible);
+            QObject::connect(c, &KDecoration3::DecoratedWindow::minimizeableChanged, b, &Breeze::Button::setVisible);
             break;
 
-        case KDecoration2::DecorationButtonType::ContextHelp:
+        case KDecoration3::DecorationButtonType::ContextHelp:
             b->setVisible(c->providesContextHelp());
-            QObject::connect(c, &KDecoration2::DecoratedClient::providesContextHelpChanged, b, &Breeze::Button::setVisible);
+            QObject::connect(c, &KDecoration3::DecoratedWindow::providesContextHelpChanged, b, &Breeze::Button::setVisible);
             break;
 
-        case KDecoration2::DecorationButtonType::Shade:
+        case KDecoration3::DecorationButtonType::Shade:
             b->setVisible(c->isShadeable());
-            QObject::connect(c, &KDecoration2::DecoratedClient::shadeableChanged, b, &Breeze::Button::setVisible);
+            QObject::connect(c, &KDecoration3::DecoratedWindow::shadeableChanged, b, &Breeze::Button::setVisible);
             break;
 
-        case KDecoration2::DecorationButtonType::Menu:
-            QObject::connect(c, &KDecoration2::DecoratedClient::iconChanged, b, [b]() {
+        case KDecoration3::DecorationButtonType::Menu:
+            QObject::connect(c, &KDecoration3::DecoratedWindow::iconChanged, b, [b]() {
                 b->update();
             });
             break;
@@ -133,7 +133,7 @@ Button *Button::create(KDecoration2::DecorationButtonType type, KDecoration2::De
 }
 
 //__________________________________________________________________
-void Button::paint(QPainter *painter, const QRect &repaintRegion)
+void Button::paint(QPainter *painter, const QRectF &repaintRegion)
 {
     if (!geometry().intersects(repaintRegion)) {
         return;
@@ -141,7 +141,7 @@ void Button::paint(QPainter *painter, const QRect &repaintRegion)
     if (!m_d) {
         return;
     }
-    auto c = m_d->client();
+    auto c = m_d->window();
 
     m_buttonPalette =
         m_d->decorationColors()->buttonPalette(static_cast<DecorationButtonType>(type())); // this is in paint() in-case caching type on m_buttonPalette changes
@@ -170,7 +170,7 @@ void Button::paint(QPainter *painter, const QRect &repaintRegion)
     painter->save();
 
     // menu button (with application icon)
-    if (type() == KDecoration2::DecorationButtonType::Menu) {
+    if (type() == KDecoration3::DecorationButtonType::Menu) {
         // draw a background only with Full-sized background shapes;
         // for standalone/GTK we draw small buttons so can't draw menu
         if (m_d->buttonBackgroundType() == ButtonBackgroundType::FullHeight && !(isStandAlone() || m_isGtkCsdButton))
@@ -271,7 +271,7 @@ void Button::drawIcon(QPainter *painter) const
     painter->setPen(pen);
 
     if (m_renderSystemIcon) {
-        auto c = m_d->client();
+        auto c = m_d->window();
         QString systemIconName;
         systemIconName = isChecked() ? m_systemIconCheckedName : m_systemIconName;
         SystemIconTheme iconRenderer(painter,
@@ -310,16 +310,16 @@ QColor Button::foregroundColor(const bool getNonAnimatedColor) const
     if (!m_d)
         return QColor();
 
-    auto c = m_d->client();
+    auto c = m_d->window();
     const bool active = c->isActive();
 
     // return a variant of normal, hover and press colours, depending on state
     if (isPressed()) {
         return foregroundPressActiveStateAnimated(active, getNonAnimatedColor);
     } else if (isChecked()
-               && (type() == KDecoration2::DecorationButtonType::KeepBelow || type() == KDecoration2::DecorationButtonType::KeepAbove
-                   || type() == KDecoration2::DecorationButtonType::Shade
-                   || (type() == KDecoration2::DecorationButtonType::OnAllDesktops && !m_titlebarTextPinnedInversion))) {
+               && (type() == KDecoration3::DecorationButtonType::KeepBelow || type() == KDecoration3::DecorationButtonType::KeepAbove
+                   || type() == KDecoration3::DecorationButtonType::Shade
+                   || (type() == KDecoration3::DecorationButtonType::OnAllDesktops && !m_titlebarTextPinnedInversion))) {
         if (m_d->internalSettings()->buttonStateChecked(active) == InternalSettings::EnumButtonStateChecked::Hover) {
             return foregroundHoverActiveStateAnimated(active, getNonAnimatedColor);
         } else {
@@ -407,16 +407,16 @@ QColor Button::backgroundColor(const bool getNonAnimatedColor) const
         return QColor();
     }
 
-    auto c = m_d->client();
+    auto c = m_d->window();
     const bool active = c->isActive();
 
     // return a variant of normal, hover and press colours, depending on state
     if (isPressed()) {
         return backgroundPressActiveStateAnimated(active, getNonAnimatedColor);
     } else if (isChecked()
-               && (type() == KDecoration2::DecorationButtonType::KeepBelow || type() == KDecoration2::DecorationButtonType::KeepAbove
-                   || type() == KDecoration2::DecorationButtonType::Shade
-                   || (type() == KDecoration2::DecorationButtonType::OnAllDesktops && !m_titlebarTextPinnedInversion))) {
+               && (type() == KDecoration3::DecorationButtonType::KeepBelow || type() == KDecoration3::DecorationButtonType::KeepAbove
+                   || type() == KDecoration3::DecorationButtonType::Shade
+                   || (type() == KDecoration3::DecorationButtonType::OnAllDesktops && !m_titlebarTextPinnedInversion))) {
         if (m_d->internalSettings()->buttonStateChecked(active) == InternalSettings::EnumButtonStateChecked::Hover) {
             return backgroundHoverActiveStateAnimated(active, getNonAnimatedColor);
         } else {
@@ -503,16 +503,16 @@ QColor Button::outlineColor(const bool getNonAnimatedColor) const
     if (!m_d)
         return QColor();
 
-    auto c = m_d->client();
+    auto c = m_d->window();
     const bool active = c->isActive();
 
     // return a variant of normal, hover and press colours, depending on state
     if (isPressed()) {
         return outlinePressActiveStateAnimated(active, getNonAnimatedColor);
     } else if (isChecked()
-               && (type() == KDecoration2::DecorationButtonType::KeepBelow || type() == KDecoration2::DecorationButtonType::KeepAbove
-                   || type() == KDecoration2::DecorationButtonType::Shade
-                   || (type() == KDecoration2::DecorationButtonType::OnAllDesktops && !m_titlebarTextPinnedInversion))) {
+               && (type() == KDecoration3::DecorationButtonType::KeepBelow || type() == KDecoration3::DecorationButtonType::KeepAbove
+                   || type() == KDecoration3::DecorationButtonType::Shade
+                   || (type() == KDecoration3::DecorationButtonType::OnAllDesktops && !m_titlebarTextPinnedInversion))) {
         if (m_d->internalSettings()->buttonStateChecked(active) == InternalSettings::EnumButtonStateChecked::Hover) {
             return outlineHoverActiveStateAnimated(active, getNonAnimatedColor);
         } else {
@@ -597,10 +597,10 @@ bool Button::titlebarTextPinnedInversion() const
 {
     if (!m_d)
         return false;
-    auto c = m_d->client();
+    auto c = m_d->window();
     bool active = c->isActive();
 
-    return type() == KDecoration2::DecorationButtonType::OnAllDesktops
+    return type() == KDecoration3::DecorationButtonType::OnAllDesktops
         && m_d->internalSettings()->buttonIconStyle() != InternalSettings::EnumButtonIconStyle::StyleSystemIconTheme
         && (m_d->internalSettings()->buttonBackgroundOpacity(active) > 50 && m_d->internalSettings()->buttonIconOpacity(active) > 50
             && (((m_d->internalSettings()->buttonBackgroundColors(active) == InternalSettings::EnumButtonBackgroundColors::TitleBarText
@@ -671,7 +671,7 @@ void Button::updateThinWindowOutlineWithButtonColor(bool on)
         // This is to prevent glitches when you directly mouse over one button to another and the second button does not trigger on.
         // In the case where another button is hovered/pressed do not send an off flag.
         const auto decButtons = m_d->leftButtons()->buttons() + m_d->rightButtons()->buttons();
-        for (KDecoration2::DecorationButton *decButton : decButtons) {
+        for (KDecoration3::DecorationButton *decButton : decButtons) {
             Button *button = static_cast<Button *>(decButton);
 
             if (button != this && (button->isHovered() || button->isPressed())) {
@@ -788,7 +788,7 @@ void Button::paintFullHeightButtonBackground(QPainter *painter) const
 
             outline = outline.subtracted(inner);
         } else if (m_d->internalSettings()->buttonShape() == InternalSettings::EnumButtonShape::ShapeIntegratedRoundedRectangleGrouped) {
-            if (type() != KDecoration2::DecorationButtonType::Menu) {
+            if (type() != KDecoration3::DecorationButtonType::Menu) {
                 QPainterPath inner;
                 qreal halfPenWidth = penWidth / 2;
                 geometryShrinkOffsetHorizontal = halfPenWidth;
@@ -954,7 +954,7 @@ void Button::paintFullHeightButtonBackground(QPainter *painter) const
                 background = GeometryTools::roundedPath(backgroundBoundingRect, CornersBottom, cornerRadius);
             }
         } else if (m_d->internalSettings()->buttonShape() == InternalSettings::EnumButtonShape::ShapeIntegratedRoundedRectangleGrouped) {
-            if (type() != KDecoration2::DecorationButtonType::Menu) {
+            if (type() != KDecoration3::DecorationButtonType::Menu) {
                 painter->setPen(Qt::NoPen);
                 bool visibleAfterSpacer = m_visibleAfterMenu || m_visibleAfterSpacer;
                 bool visibleBeforeSpacer = m_visibleBeforeMenu || m_visibleBeforeSpacer;

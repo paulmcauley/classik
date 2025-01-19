@@ -58,7 +58,7 @@ void SettingsProvider::reconfigure()
 InternalSettingsPtr SettingsProvider::internalSettings(Decoration *decoration)
 {
     // get the client
-    auto client = decoration->client();
+    auto client = decoration->window();
 
     for (auto internalSettings : std::as_const(m_exceptions)) {
         // discard disabled exceptions

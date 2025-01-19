@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     dialog.setWindowTitle(i18n("Klassy Settings"));
     dialog.setMinimumWidth(800);
     dialog.addModule(KPluginMetaData(QStringLiteral("kstyle_config/klassystyleconfig")));
-    dialog.addModule(KPluginMetaData(QStringLiteral("org.kde.kdecoration2.kcm/kcm_klassydecoration.so")));
+    dialog.addModule(KPluginMetaData(QStringLiteral("org.kde.kdecoration3.kcm/kcm_klassydecoration.so")));
     dialog.show();
 
     const auto children = dialog.findChildren<QAbstractScrollArea *>();

@@ -50,7 +50,7 @@ ConfigWidget::ConfigWidget(QObject *parent, const KPluginMetaData &data, const Q
 {
     // this is a hack to get an Apply button
     if (widget() && QCoreApplication::applicationName() == QStringLiteral("systemsettings")) {
-        system("kcmshell6 org.kde.kdecoration2.kcm/kcm_klassydecoration.so &");
+        system("kcmshell6 org.kde.kdecoration3.kcm/kcm_klassydecoration.so &");
         if (widget()->window()) {
             widget()->window()->close();
         }

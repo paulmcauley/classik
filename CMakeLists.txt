@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 project(klassy)
-set(PROJECT_VERSION "6.2.breeze6.2.1")
+set(PROJECT_VERSION "6.2.1")
 set(PROJECT_VERSION_MAJOR 6)
 
 add_definitions( -DKLASSY_VERSION="${PROJECT_VERSION}" -DKLASSY_GIT_MASTER=0)
@@ -165,7 +165,7 @@ function(build_Qt6)
     add_subdirectory(libbreezecommon libbreezecommon6)
 
     if(WITH_DECORATIONS)
-        find_package(KDecoration2 REQUIRED)
+        find_package(KDecoration3 REQUIRED)
         add_subdirectory(kdecoration)
         add_subdirectory(icons)
         add_subdirectory(layout-templates)

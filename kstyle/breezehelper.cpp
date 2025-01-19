@@ -118,7 +118,7 @@ void Helper::loadConfig()
                         != _decorationColors->settingsUpdateUuid()))) { // case from generateDecorationColorsOnDecorationSettingsPaletteUpdate()
             generateColors = true;
         }
-        // TODO: palette may not be a reliable indicator of the entire colour scheme - get an update to KDecoration2::DecoratedClient to read QString
+        // TODO: palette may not be a reliable indicator of the entire colour scheme - get an update to KDecoration3::DecoratedClient to read QString
         // m_colorScheme instead and update to compare m_colorScheme and system titlebar colours
         if (!generateColors && palette != *_decorationColors->basePalette()) {
             generateColors = true;

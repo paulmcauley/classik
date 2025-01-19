@@ -33,7 +33,7 @@ target_link_libraries(klassydecoration
         KF6::I18n
         KF6::IconThemes
         KF6::WindowSystem
-        KDecoration2::KDecoration
+        KDecoration3::KDecoration
 )
 
 install(TARGETS klassydecoration DESTINATION ${KDE_INSTALL_PLUGINDIR}/${KDECORATION_PLUGIN_DIR})

@@ -46,7 +46,7 @@ target_link_libraries(kcm_klassydecoration
         Qt6::Gui
         Qt6::DBus
         Qt6::Widgets
-        KDecoration2::KDecoration
+        KDecoration3::KDecoration
     PRIVATE
         KF6::ConfigCore
         KF6::CoreAddons

@@ -2076,7 +2076,7 @@ void ButtonColors::getButtonsOrderFromKwinConfig()
     QString buttonsOnLeft;
     QString buttonsOnRight;
 
-    // very hacky way to do this -- better would be to find a way to get the settings from <KDecoration2/DecorationSettings>
+    // very hacky way to do this -- better would be to find a way to get the settings from <KDecoration3/DecorationSettings>
     //  read kwin button border setting
     KSharedConfig::Ptr kwinConfig = KSharedConfig::openConfig(QStringLiteral("kwinrc"));
     if (kwinConfig && kwinConfig->hasGroup(QStringLiteral("org.kde.kdecoration2"))) {
